@@ -1,0 +1,4 @@
+adapter: mysql2
+database: netsmith
+username: root
+host: localhost
