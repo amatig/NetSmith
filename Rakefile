@@ -1,26 +1,21 @@
 # -*- ruby -*-
 
-require 'rubygems'
-require 'active_record'
-require 'yaml'
-require 'logger'
+require 'core/database'
 
 task :default => :migrate
 
 task :environment do
-  ActiveRecord::Base.establish_connection(YAML::load(File.open('config/database.yml')))
-  ActiveRecord::Base.logger = Logger.new(File.open('database.log', 'a'))
-  ActiveRecord::Base.logger.level = Logger::DEBUG
+  Database::connection
 end
 
 desc "Migrazione del database attraverso gli scripts in db/migrate. Usare VERSION=x per una specifica versione."
 task :migrate => :environment do
-  ActiveRecord::Migrator.migrate('db/migrate', ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+  Database::migrate
 end
 
 desc "Test di aggiornamento valore"
 task :test => :environment do
-  require 'db/models/users.rb'
+  require 'core/db/models/users.rb'
   # u = Users.all
   u = Users.find(:first)
   p u
