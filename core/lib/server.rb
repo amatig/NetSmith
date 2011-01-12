@@ -12,7 +12,7 @@ class Server
     if s.valid?
       s.save
     else
-      puts format_err(s.errors)
+      format_err(s.errors)
     end
   end
   
@@ -21,8 +21,9 @@ class Server
     s = Servers.find(:first, :conditions => ["ip = ?", ip])
     if s
       s.delete
+      true
     else
-      puts "Server not found"
+      "Server not found"
     end
   end
   
@@ -34,16 +35,16 @@ class Server
       if s.valid?
         s.save
       else
-        puts format_err(s.errors)
+        format_err(s.errors)
       end
     else
-      puts "Server not found"
+      "Server not found"
     end
   end
   
   def self.list
     Database.enviroment
-    puts Servers.all
+    Servers.all
   end
   
 end

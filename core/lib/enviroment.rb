@@ -1,7 +1,7 @@
 class Enviroment
   
   def self.install
-    puts "ok install"
+    nil
   end
   
 end
