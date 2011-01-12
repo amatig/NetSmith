@@ -3,7 +3,7 @@
 # external require
 require "active_record"
 require "yaml"
-#require "logger"
+require "logger"
 
 # require all lib
 Dir.glob("core/lib/*.rb").each { |r| require r }
