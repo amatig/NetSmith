@@ -1,8 +1,8 @@
 # -*- ruby -*-
 
-require 'core/lib/database'
+require "core/lib/database"
 
-namespace 'db' do
+namespace "db" do
   
   task :enviroment do
     Database.enviroment
