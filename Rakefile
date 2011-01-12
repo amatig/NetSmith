@@ -6,10 +6,9 @@ task :default => 'db:migrate'
 
 desc "Test di aggiornamento valore user."
 task :test => 'db:enviroment' do
-  require 'core/db/models/users.rb'
   u = Users.find(:first)
   if not u
-    puts "new"
+    puts "new user"
     u = Users.new({:name => 'giovanni', :cell => '4323424e32'})
   else
     p u
