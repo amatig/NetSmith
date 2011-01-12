@@ -1,6 +1,6 @@
 # -*- ruby -*-
 
-require 'core/database'
+Dir.glob('core/*.rake').each { |r| import r }
 
 task :default => 'db:migrate'
 

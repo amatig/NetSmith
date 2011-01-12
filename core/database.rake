@@ -1,3 +1,5 @@
+# -*- ruby -*-
+
 require 'active_record'
 require 'yaml'
 # require 'logger'
