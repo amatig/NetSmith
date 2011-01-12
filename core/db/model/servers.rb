@@ -1,5 +1,3 @@
-require "active_record"
-
 class Servers < ActiveRecord::Base
   validates :conn_type, :ip, :presence => true
   validates_length_of :conn_type, :maximum => 15

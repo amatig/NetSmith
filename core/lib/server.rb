@@ -1,10 +1,6 @@
-require "core/lib/database"
-require "core/lib/utils"
-
 class Server
   
   def self.add(conn_type, ip, hostname, descr)
-    Database.enviroment
     s = Servers.new(:conn_type => conn_type,
                     :ip => ip, 
                     :hostname => hostname,
@@ -17,7 +13,6 @@ class Server
   end
   
   def self.del(ip)
-    Database.enviroment
     s = Servers.find(:first, :conditions => ["ip = ?", ip])
     if s
       s.delete
@@ -28,7 +23,6 @@ class Server
   end
   
   def self.edit(ip, attr, value)
-    Database.enviroment
     s = Servers.find(:first, :conditions => ["ip = ?", ip])
     if s
       s[attr] = value
@@ -43,7 +37,6 @@ class Server
   end
   
   def self.list
-    Database.enviroment
     Servers.all
   end
   

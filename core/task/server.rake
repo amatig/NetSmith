@@ -1,7 +1,5 @@
 # -*- ruby -*-
 
-require "core/lib/server"
-
 namespace "server" do
   
   desc "Aggiunge un nuovo server da gestire."

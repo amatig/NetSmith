@@ -1,5 +1,3 @@
-require "active_record"
-
 class Servers < ActiveRecord::Migration
   
   def self.up
