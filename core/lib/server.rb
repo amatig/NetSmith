@@ -26,6 +26,21 @@ class Server
     end
   end
   
+  def self.edit(ip, attr, value)
+    Database.enviroment
+    s = Servers.find(:first, :conditions => ["ip = ?", ip])
+    if s
+      s[attr] = value
+      if s.valid?
+        s.save
+      else
+        puts format_err(s.errors)
+      end
+    else
+      puts "Server not found"
+    end
+  end
+  
   def self.list
     Database.enviroment
     puts Servers.all
