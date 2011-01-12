@@ -1,8 +1,8 @@
 class Server
   
-  def self.add(conn_type, ip, hostname, descr)
-    s = Servers.new(:conn_type => conn_type,
-                    :ip => ip, 
+  def self.add(ip, conn_type, hostname, descr)
+    s = Servers.new(:ip => ip, 
+                    :conn_type => conn_type,
                     :hostname => hostname,
                     :descr => descr)
     if s.valid?

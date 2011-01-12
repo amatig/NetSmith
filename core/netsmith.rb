@@ -5,7 +5,7 @@ require "active_record"
 require "yaml"
 require "logger"
 
-# require all lib
+# require all libs
 Dir.glob("core/lib/*.rb").each { |r| require r }
 
 # estabilish connection database
