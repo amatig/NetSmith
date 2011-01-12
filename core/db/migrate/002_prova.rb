@@ -1,3 +1,5 @@
+require 'active_record'
+
 class Prova < ActiveRecord::Migration
   
   def self.up
