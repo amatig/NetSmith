@@ -1,6 +1,6 @@
 class Server
   
-  def self.add(ip, conn_type, hostname, descr)
+  def add(ip, conn_type, hostname, descr)
     s = Servers.new(:ip => ip, 
                     :conn_type => conn_type,
                     :hostname => hostname,
@@ -12,7 +12,7 @@ class Server
     end
   end
   
-  def self.del(ip)
+  def del(ip)
     s = Servers.find(:first, :conditions => ["ip = ?", ip])
     if s
       s.delete
@@ -22,7 +22,7 @@ class Server
     end
   end
   
-  def self.edit(ip, attr, value)
+  def edit(ip, attr, value)
     s = Servers.find(:first, :conditions => ["ip = ?", ip])
     if s
       s[attr] = value
@@ -36,7 +36,7 @@ class Server
     end
   end
   
-  def self.list
+  def list
     Servers.all
   end
   

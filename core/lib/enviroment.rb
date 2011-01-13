@@ -1,7 +1,7 @@
 class Enviroment
   
-  def self.install
+  def install
     nil
   end
-  
+      
 end

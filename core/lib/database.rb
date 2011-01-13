@@ -3,11 +3,11 @@ class Database
   
   def initialize
     path = File.expand_path("../../", __FILE__)
-    dbconfig = YAML::load(File.open(File.join(path, "config/database.yml")))
+    f = File.open(File.join(path, "config/database.yml"), "r")
+    dbconfig = YAML::load(f)
+    f.close
     dbconfig["database"] = File.join(path, dbconfig["database"])
     ActiveRecord::Base.establish_connection(dbconfig)
-    # ActiveRecord::Base.logger = Logger.new(File.open("database.log", "a"))
-    # ActiveRecord::Base.logger.level = Logger::DEBUG
   end
   
   def migrate
