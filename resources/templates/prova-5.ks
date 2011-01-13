@@ -10,14 +10,14 @@ install
 
 # Network information
 #network --device eth0 --bootproto dhcp
-network --bootproto {bootproto|text} --hostname { hostname | text }
+network --bootproto {{bootproto|text}} --hostname {{hostname|text}}
 
 # Repository Location
 url --url=http://192.168.56.1/pxe/dist/centos-5.5
 
 #Root password
 #rootpw --iscrypted $1$rB3lJzDT$PmMFJJiLgVPbnvJF6UZ1x/
-rootpw {rootpw|passwd}
+rootpw {{rootpw|passwd}}
 
 # Firewall configuration
 firewall --disabled

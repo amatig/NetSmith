@@ -1,8 +1,10 @@
 # NetSmith Importer
 
 # require external libs
+require "rubygems"
 require "active_record"
 require "yaml"
+require "liquid"
 require "logger"
 require "ftools"
 

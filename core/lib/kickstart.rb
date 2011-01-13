@@ -34,16 +34,16 @@ class Kickstart
     if File.exist?(file)
       fields = {}
       f = File.open(file, "r")
-      f.read.each do |r|
-        match = r.scan(/\{\s*(\w+\s*\|\s*\w+)\s*\}/)
-        if match
-          match.each do |m|
-            d = m[0].split("|")
-            fields[d[0].strip] = d[1].strip
+      template = Liquid::Template.parse(f.read)
+      f.close
+      template.root.nodelist.each do |v|
+        if v.class == Liquid::Variable
+          begin
+            fields[v.name] = v.filters[0][0].to_s
+          rescue
           end
         end
       end
-      f.close
       fields
     else
       "Kickstart not exist"

@@ -26,7 +26,7 @@ namespace "env" do
         end
         puts true # salvare i valori
       else
-        puts "Error kickstart file"
+        puts "Error kickstart file" # salva cmq la macchina :|
       end
     else
       puts m
