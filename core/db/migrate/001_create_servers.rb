@@ -1,4 +1,4 @@
-class Servers < ActiveRecord::Migration
+class CreateServers < ActiveRecord::Migration
   
   def self.up
     create_table :servers do |t|
