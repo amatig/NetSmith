@@ -17,6 +17,7 @@
 # Require external libs
 require "rubygems"
 require "active_record"
+require "sqlite3"
 require "yaml"
 require "liquid"
 require "logger"
