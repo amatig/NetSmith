@@ -15,3 +15,4 @@ Per usare le librerie di NetSmith e' necessario importare il seguente modulo com
 require "core/netsmith"
 
 Questo permette di avere tutte le funzionalita' del core gia' pronte.
+Il Rakefile e la cartella tasks indicano un esempio di utilizzo delle su dette librerie.
