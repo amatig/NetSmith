@@ -34,7 +34,8 @@ class KickstartLib
       end
       path = File.expand_path("../../../resources", __FILE__)
       file = File.join(path, "templates", m.template)
-      if File.exist?(file)  
+      if File.exist?(file)
+        Dir.mkdir(File.join(path, "ks")) unless File.exist?(File.join(path, "ks"))
         unless values.empty?
           f = File.open(file, "r")
           template = Liquid::Template.parse(f.read)
