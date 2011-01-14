@@ -23,4 +23,6 @@ Per quanto riguarda le dipendenze e' possibile scaricarle localmente alla root d
 
 bundle install
 
-In alternativa, installare le gemme normalmente con gem install
+In alternativa, installare le gemme normalmente con comando:
+
+gem install <nome pacchetto>
