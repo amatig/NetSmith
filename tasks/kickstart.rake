@@ -17,6 +17,11 @@ namespace "ks" do
     puts KickstartLib.new.list_templates
   end
   
+  desc "Attualizza un template kickstart per una macchina in gestione."
+  task :actualize, [:ip] do |t, args|
+    puts KickstartLib.new.actualize(args[:ip])
+  end
+  
   desc "Mostra i campi parametrici di un template kickstart."
   task :get_fields, [:name_ks] do |t, args|
     p KickstartLib.new.get_fields(args[:name_ks])

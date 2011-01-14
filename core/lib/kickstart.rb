@@ -5,7 +5,7 @@ class KickstartLib
       path = File.expand_path("../../../resources/templates", __FILE__)
       File.copy(file, path)
     else
-      "File not exist"
+      "File #{file} not exist"
     end
   end
   
@@ -25,7 +25,33 @@ class KickstartLib
     files
   end
   
-  def actualize
+  def actualize(ip)
+    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+    if m
+      values = {}
+      m.setting_values.each do |v|
+        values[v.name] = v.value
+      end
+      path = File.expand_path("../../../resources", __FILE__)
+      file = File.join(path, "templates", m.template)
+      if File.exist?(file)  
+        unless values.empty?
+          f = File.open(file, "r")
+          template = Liquid::Template.parse(f.read)
+          f.close
+          f = File.new(File.join(path, "ks", m.mac.gsub(":", "-") + "-" + m.template), "w")
+          f.write(template.render(values))
+          f.close
+        else
+          File.copy(file, File.join(path, "ks", m.mac.gsub(":", "-") + "-" + m.template))
+        end
+        true
+      else
+        "File #{file} not exist"
+      end
+    else
+      "Machine not found"
+    end
   end
   
   def get_fields(name_ks)
