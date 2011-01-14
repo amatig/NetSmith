@@ -28,6 +28,7 @@ class DatabaseLib
   end
   
   # Migrazione del db tramite scripts in core/db/migrate.
+  # @param [Integer] version indica il numero di versione della struttura del database, 0 droppa ogni tabella.
   def migrate(version = nil)
     path = File.expand_path("../../db/migrate", __FILE__)
     ActiveRecord::Migrator.migrate(path, version ? version.to_i : nil)
