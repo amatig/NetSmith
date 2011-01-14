@@ -8,7 +8,7 @@ class ServerLib
     if s.valid?
       s.save
     else
-      format_err(s.errors)
+      s.errors
     end
   end
   
@@ -18,7 +18,7 @@ class ServerLib
       s.destroy
       true
     else
-      "Server not found"
+      "Server #{ip} not found"
     end
   end
   
@@ -29,10 +29,10 @@ class ServerLib
       if s.valid?
         s.save
       else
-        format_err(s.errors)
+        s.errors
       end
     else
-      "Server not found"
+      "Server #{ip} not found"
     end
   end
   

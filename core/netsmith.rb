@@ -1,6 +1,20 @@
-# NetSmith Importer
+# NetSmith Importer.
+# = Description
+# File di require principale per importare tutte le funzionalita' di NetSmith.
+# = License
+# NetSmith - bla bla bla
+#
+# Copyright (C) 2011 Giovanni Amati, Domenico Chierico
+#
+# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
+# = Authors
+# Giovanni Amati, Domenico Chierico
 
-# require external libs
+# Require external libs
 require "rubygems"
 require "active_record"
 require "yaml"
@@ -8,11 +22,11 @@ require "liquid"
 require "logger"
 require "ftools"
 
-# require all libs
+# Require all libs
 Dir.glob("core/lib/*.rb").each { |r| require r }
 
-# estabilish connection database
+# Estabilish connection database
 DatabaseLib.instance
 
-# require all models
+# Require all models
 Dir.glob("core/db/models/*.rb").each { |r| require r }

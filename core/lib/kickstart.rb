@@ -1,5 +1,24 @@
+# Classe per la gestione dei kickstart file.
+# = Description
+# Questa classe si occupa della gestione dei file di kickstart utili per le installazioni remote di alcune distro linux.
+# = License
+# NetSmith - bla bla bla
+#
+# Copyright (C) 2011 Giovanni Amati, Domenico Chierico
+#
+# This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
+# = Authors
+# Giovanni Amati, Domenico Chierico
+
 class KickstartLib
   
+  # Aggiunge un template kickstart.
+  # @param [String] file filename completo di percorso assoluto all'interno del disco.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
   def add_template(file)
     if File.exist?(file)
       path = File.expand_path("../../../resources/templates", __FILE__)
@@ -9,6 +28,8 @@ class KickstartLib
     end
   end
   
+  # Lista dei kickstart 'attualizzati'..
+  # @return [Array<String>] lista dei file.
   def list
     path = File.expand_path("../../../resources/ks", __FILE__)
     files = Dir.new(path).entries
@@ -17,6 +38,8 @@ class KickstartLib
     files
   end
   
+  # Lista dei template kickstart..
+  # @return [Array<String>] lista dei file.
   def list_templates
     path = File.expand_path("../../../resources/templates", __FILE__)
     files = Dir.new(path).entries
@@ -25,6 +48,9 @@ class KickstartLib
     files
   end
   
+  # Attualizza un template kickstart per una macchina in gestione.
+  # @param [String] ip indirizzo di una macchina in gestione.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
   def actualize(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
@@ -51,10 +77,13 @@ class KickstartLib
         "File #{file} not exist"
       end
     else
-      "Machine not found"
+      "Machine #{ip} not found"
     end
   end
   
+  # Mostra i campi parametrici di un template kickstart.
+  # @param [String] name_ks nome di un template kickstart gia' nel sistema.
+  # @return [Hash] dizionario delle variabili nel template { nome => tipo, ... }.
   def get_fields(name_ks)
     path = File.expand_path("../../../resources/templates", __FILE__)
     file = File.join(path, name_ks)
@@ -65,15 +94,12 @@ class KickstartLib
       fields = {}
       template.root.nodelist.each do |v|
         if v.kind_of?(Liquid::Variable)
-          begin
-            fields[v.name] = v.filters[0][0].to_s
-          rescue
-          end
+          fields[v.name] = v.filters[0][0].to_s
         end
       end
       fields
     else
-      "Kickstart not exist"
+      "Kickstart #{name_ks} not exist"
     end
   end
   

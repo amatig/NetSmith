@@ -1,7 +1,12 @@
 # More Utils
 
-def format_err(errors)
+# Abbellisce l'output per il terminale rake dei tasks
+def output(message)
   msg = ""
-  errors.each { |k,v| msg += "#{k}: #{v}\n" }
-  return msg
+  if message.kind_of?(Hash)
+    message.each { |k, v| msg += "#{k}: #{v}\n" }
+  else
+    msg = message
+  end
+  msg
 end

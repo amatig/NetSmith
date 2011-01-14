@@ -12,7 +12,7 @@ class DatabaseLib
   
   def migrate
     path = File.expand_path("../../db/migrate", __FILE__)
-    ActiveRecord::Migrator.migrate(path, ENV["VERSION"] ? ENV["VERSION"].to_i : nil )
+    ActiveRecord::Migrator.migrate(path, ENV["VERSION"] ? ENV["VERSION"].to_i : nil)
   end
   
 end

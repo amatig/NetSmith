@@ -6,7 +6,7 @@ class MachineLib
       m.destroy
       true
     else
-      "Machine not found"
+      "Machine #{ip} not found"
     end
   end
   
@@ -17,37 +17,37 @@ class MachineLib
       if m.valid?
         m.save
       else
-        format_err(m.errors)
+        m.errors
       end
     else
-      "Machine not found"
+      "Machine #{ip} not found"
     end
   end
   
   def add(ip, mac, hostname, template, descr, values = {})
-    s = Machine.new(:ip => ip, 
+    m = Machine.new(:ip => ip, 
                     :mac => mac,
                     :hostname => hostname,
                     :template => template,
                     :descr => descr)
-    if s.valid?
-      s.save
+    if m.valid?
+      m.save
       esito = true
       values.each do |k, v|
-        v = SettingValue.new(:machine_id => s.id,
+        v = SettingValue.new(:machine_id => m.id,
                              :name => k,
                              :value => v)
         if v.valid?
           v.save
         else
-          esito = format_err(v.errors)
-          s.destroy
+          esito = v.errors
+          m.destroy
           break
         end
       end
       esito
     else
-      format_err(s.errors)
+      m.errors
     end
   end
   

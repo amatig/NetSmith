@@ -4,12 +4,12 @@ namespace "machine" do
   
   desc "Rimuove una macchina gestita dall'enviroment."
   task :del, [:ip] do |t, args|
-    puts MachineLib.new.del(args[:ip])
+    puts output(MachineLib.new.del(args[:ip]))
   end
   
   desc "Modifica un attributo di una macchina in gestione con l'enviroment."
   task :edit, [:ip, :attr, :value] do |t, args|
-    puts MachineLib.new.edit(args[:ip], args[:attr], args[:value])
+    puts output(MachineLib.new.edit(args[:ip], args[:attr], args[:value]))
   end
   
   desc "Aggiunge una nuova macchina da gestire con l'enviroment."
@@ -22,20 +22,20 @@ namespace "machine" do
         print "Enter #{k} (#{v}): "
         values[k] = $stdin.gets.chomp
       end
-      puts MachineLib.new.add(args[:ip], 
-                                 args[:mac], 
-                                 args[:hostname], 
-                                 args[:name_ks], 
-                                 args[:descr],
-                                 values)
+      puts output(MachineLib.new.add(args[:ip], 
+                                     args[:mac], 
+                                     args[:hostname], 
+                                     args[:name_ks], 
+                                     args[:descr],
+                                     values))
     else
-      puts "Error kickstart file"
+      puts output("Error kickstart file")
     end
   end
   
   desc "Lista delle macchine gestite dall'enviroment."
   task :list do
-    puts MachineLib.new.list
+    puts output(MachineLib.new.list)
   end
   
 end
