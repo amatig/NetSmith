@@ -16,3 +16,11 @@ require "core/netsmith"
 
 Questo permette di avere tutte le funzionalita' del core gia' pronte.
 Il Rakefile e la cartella tasks indicano un esempio di utilizzo delle su dette librerie.
+
+== Require
+
+Per quanto riguarda le dipendenze e' possibile scaricarle localmente all'applicazione attraverso il comando:
+
+bundle install
+
+In alternativa, installare le gemme normalmente con gem install
