@@ -1,7 +1,7 @@
-class Server
+class ServerLib
   
   def add(ip, conn_type, hostname, descr)
-    s = Servers.new(:ip => ip, 
+    s = Server.new(:ip => ip, 
                     :conn_type => conn_type,
                     :hostname => hostname,
                     :descr => descr)
@@ -13,9 +13,9 @@ class Server
   end
   
   def del(ip)
-    s = Servers.find(:first, :conditions => ["ip = ?", ip])
+    s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
-      s.delete
+      s.destroy
       true
     else
       "Server not found"
@@ -23,7 +23,7 @@ class Server
   end
   
   def edit(ip, attr, value)
-    s = Servers.find(:first, :conditions => ["ip = ?", ip])
+    s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
       s[attr] = value
       if s.valid?
@@ -37,7 +37,7 @@ class Server
   end
   
   def list
-    Servers.all
+    Server.all
   end
   
 end

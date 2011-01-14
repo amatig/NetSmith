@@ -1,4 +1,4 @@
-class Servers < ActiveRecord::Base
+class Server < ActiveRecord::Base
   validates_presence_of :ip
   validates_presence_of :conn_type
   validates_format_of :ip, :with => /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/

@@ -1,4 +1,4 @@
-class Kickstart
+class KickstartLib
   
   def add_template(file)
     if File.exist?(file)

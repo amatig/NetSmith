@@ -1,4 +1,4 @@
-class Database
+class DatabaseLib
   include Singleton
   
   def initialize
