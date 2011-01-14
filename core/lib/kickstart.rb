@@ -32,12 +32,12 @@ class Kickstart
     path = File.expand_path("../../../resources/templates", __FILE__)
     file = File.join(path, name_ks)
     if File.exist?(file)
-      fields = {}
       f = File.open(file, "r")
       template = Liquid::Template.parse(f.read)
       f.close
+      fields = {}
       template.root.nodelist.each do |v|
-        if v.class == Liquid::Variable
+        if v.kind_of?(Liquid::Variable)
           begin
             fields[v.name] = v.filters[0][0].to_s
           rescue
