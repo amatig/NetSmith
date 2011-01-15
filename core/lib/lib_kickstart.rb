@@ -49,7 +49,7 @@ class LibKickstart
   end
   
   # Attualizza un template kickstart per una macchina in gestione.
-  # @param [String] ip indirizzo di una macchina in gestione.
+  # @param [String] ip indirizzo di una macchina installabile.
   # @return [Boolean/String] messaggio di esito dell'operazione.
   def actualize(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])

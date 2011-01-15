@@ -16,33 +16,14 @@
 
 class LibMachine
   
-  # Rimuove una macchina installabile.
-  def del(ip)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
-    if m
-      m.destroy
-      true
-    else
-      "Machine #{ip} not found"
-    end
-  end
-  
-  # Modifica un attributo di una macchina installabile.
-  def edit(ip, attr, value)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
-    if m
-      m[attr] = value
-      if m.valid?
-        m.save
-      else
-        m.errors
-      end
-    else
-      "Machine #{ip} not found"
-    end
-  end
-  
-  # Aggiunge una nuova macchina da installabile.
+  # Aggiunge una nuova macchina installabile.
+  # @param [String] ip indirizzo della macchina.
+  # @param [String] mac MAC Address della macchina.
+  # @param [String] hostname hostname della macchina.
+  # @param [String] template kickstart template per l'installazione della macchina.
+  # @param [String] descr descrizione della macchina.
+  # @param [Hash] values valori di attualizzazione per il template della macchina.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
   def add(ip, mac, hostname, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
@@ -67,6 +48,38 @@ class LibMachine
       esito
     else
       m.errors
+    end
+  end
+  
+  # Rimuove una macchina installabile.
+  # @param [String] ip indirizzo di una macchina.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
+  def del(ip)
+    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+    if m
+      m.destroy
+      true
+    else
+      "Machine #{ip} not found"
+    end
+  end
+  
+  # Modifica un attributo di una macchina installabile.
+  # @param [String] ip indirizzo di una macchina.
+  # @param [String] attr nome dell'attributo di una macchina.
+  # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo di una macchina.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
+  def edit(ip, attr, value)
+    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+    if m
+      m[attr] = value
+      if m.valid?
+        m.save
+      else
+        m.errors
+      end
+    else
+      "Machine #{ip} not found"
     end
   end
   

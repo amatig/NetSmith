@@ -12,7 +12,7 @@ namespace "machine" do
     puts output(LibMachine.new.edit(args[:ip], args[:attr], args[:value]))
   end
   
-  desc "Aggiunge una nuova macchina da installabile."
+  desc "Aggiunge una nuova macchina installabile."
   task :add, [:ip, :mac, :hostname, :name_ks, :descr] do |t, args|
     ENV["HOSTNAME"] = nil
     fields = LibKickstart.new.get_fields(args[:name_ks])
