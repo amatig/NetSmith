@@ -1,6 +1,6 @@
 # More Utils
 
-# Abbellisce l'output per i comandi rake dei tasks
+# Abbellisce l'output per i comandi rake.
 # @param [String/Boolean/Hash/Array] message messaggio da formattare per un output piu' chiaro.
 # @return [String] messaggio ben formattato per l'output da terminale.
 def output(message)
