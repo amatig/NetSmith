@@ -1,6 +1,6 @@
-# Classe per la gestione delle macchine.
+# Classe per la gestione delle macchine da installare.
 # = Description
-# Questa classe si occupa della gestione della macchine che potranno essere installate via rete dal sistema.
+# Questa classe si occupa della gestione delle macchine che potranno essere installate via rete dal sistema.
 # = License
 # NetSmith - bla bla bla
 #
@@ -14,8 +14,9 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class MachineLib
-    
+class LibMachine
+  
+  # Rimuove una macchina installabile.
   def del(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
@@ -26,6 +27,7 @@ class MachineLib
     end
   end
   
+  # Modifica un attributo di una macchina installabile.
   def edit(ip, attr, value)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
@@ -40,6 +42,7 @@ class MachineLib
     end
   end
   
+  # Aggiunge una nuova macchina da installabile.
   def add(ip, mac, hostname, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
@@ -67,6 +70,8 @@ class MachineLib
     end
   end
   
+  # Lista delle macchine installabili.
+  # @return [Array<String>] lista delle macchine.
   def list
     Machine.all
   end

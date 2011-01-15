@@ -14,7 +14,7 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class ServerLib
+class LibServer
   
   def add(ip, conn_type, hostname, descr)
     s = Server.new(:ip => ip, 

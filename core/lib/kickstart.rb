@@ -1,6 +1,6 @@
 # Classe per la gestione dei kickstart file.
 # = Description
-# Questa classe si occupa della gestione dei file di kickstart utili per le installazioni remote di alcune distro linux.
+# Questa classe si occupa della gestione dei file di kickstart utili per le installazioni di alcune distro linux.
 # = License
 # NetSmith - bla bla bla
 #
@@ -14,7 +14,7 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class KickstartLib
+class LibKickstart
   
   # Aggiunge un template kickstart.
   # @param [String] file filename completo di percorso assoluto all'interno del disco.
@@ -28,7 +28,7 @@ class KickstartLib
     end
   end
   
-  # Lista dei kickstart 'attualizzati'..
+  # Lista dei kickstart attualizzati.
   # @return [Array<String>] lista dei file.
   def list
     path = File.expand_path("../../../resources/ks", __FILE__)
@@ -38,7 +38,7 @@ class KickstartLib
     files
   end
   
-  # Lista dei template kickstart..
+  # Lista dei template kickstart.
   # @return [Array<String>] lista dei file.
   def list_templates
     path = File.expand_path("../../../resources/templates", __FILE__)

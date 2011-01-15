@@ -1,6 +1,6 @@
 # Classe singleton per la gestione del database.
 # = Description
-# Questa classe si occupa della connessione al database e della gestione delle tabella.
+# Questa classe si occupa della connessione al database e della gestione delle tabelle.
 # = License
 # NetSmith - bla bla bla
 #
@@ -14,7 +14,7 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class DatabaseLib
+class LibDatabase
   include Singleton
   
   # Inizializzatione del singleton.

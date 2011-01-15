@@ -27,7 +27,7 @@ require "ftools"
 Dir.glob("core/lib/*.rb").each { |r| require r }
 
 # Estabilish connection database
-DatabaseLib.instance
+LibDatabase.instance
 
 # Require all models
 Dir.glob("core/db/models/*.rb").each { |r| require r }
