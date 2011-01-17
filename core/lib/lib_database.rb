@@ -25,6 +25,7 @@ class LibDatabase
     f.close
     dbconfig["database"] = File.join(path, dbconfig["database"])
     ActiveRecord::Base.establish_connection(dbconfig)
+    ActiveRecord::Base.logger = Logger.new(STDERR)
   end
   
   # Migrazione del db tramite scripts in core/db/migrate.

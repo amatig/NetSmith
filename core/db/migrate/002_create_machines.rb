@@ -8,6 +8,7 @@ class CreateMachines < ActiveRecord::Migration
       t.string :template
       t.text :descr
     end
+    Capability.create(:cap_code => "0-machine-#{generate_cap()}")
   end
   
   def self.down

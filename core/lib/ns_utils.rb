@@ -12,3 +12,4 @@ def output(message)
   end
   msg
 end
+

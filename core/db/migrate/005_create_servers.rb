@@ -7,6 +7,7 @@ class CreateServers < ActiveRecord::Migration
       t.string :hostname
       t.text :descr
     end
+    Capability.create(:cap_code => "0-server-#{generate_cap}")
   end
   
   def self.down
