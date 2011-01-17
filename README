@@ -19,7 +19,7 @@ Il Rakefile e la cartella tasks indicano un esempio di utilizzo delle su dette l
 
 == Require
 
-Per quanto riguarda le dipendenze e' possibile scaricarle, stando nella root di NetSmith,  attraverso il comando:
+Per quanto riguarda le dipendenze e' possibile scaricarle, stando nella root di NetSmith, attraverso il comando:
 
 bundle install
 
