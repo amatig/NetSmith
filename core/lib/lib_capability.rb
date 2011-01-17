@@ -14,11 +14,11 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class CapTool
+module LibCapability
   
   # Callback per il post creazione di un entita'.
-  def after_create(e)
-    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{generate_cap}")
+  def ns_after_create
+    Capability.create(:cap_code => "#{self.id}-#{self.class.to_s.downcase}-#{generate_cap}")
   end
   
 end
