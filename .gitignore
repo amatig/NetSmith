@@ -1,3 +1,6 @@
 *~
-*pyo
-*pyc
+.*
+*.lock
+doc
+core/db/netsmith.sqlite3
+resources/ks
