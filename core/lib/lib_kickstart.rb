@@ -28,6 +28,20 @@ class LibKickstart
     end
   end
   
+  # Rimuove un template kickstart.
+  # @param [String] name_ks nome di un template kickstart gia' nel sistema.
+  # @return [Boolean/String] messaggio di esito dell'operazione.
+  def del_template(name_ks)
+    path = File.expand_path("../../../resources/templates", __FILE__)
+    file = File.join(path, name_ks)
+    if File.exist?(file)
+      File.delete(file)
+      true
+    else
+      "Kickstart template #{name_ks} not exist"
+    end
+  end
+  
   # Lista dei kickstart attualizzati.
   # @return [Array<String>] lista dei file.
   def list
@@ -99,7 +113,7 @@ class LibKickstart
       end
       fields
     else
-      "Kickstart #{name_ks} not exist"
+      "Kickstart template #{name_ks} not exist"
     end
   end
   

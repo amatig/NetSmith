@@ -57,6 +57,9 @@ class LibMachine
   def del(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
+      path = File.expand_path("../../../resources/ks", __FILE__)
+      file = File.join(path, m.mac.gsub(":", "-") + "-" + m.template) # rimuove il ks
+      File.delete(file) if File.exist?(file)
       m.destroy
       true
     else
@@ -76,7 +79,18 @@ class LibMachine
       if m.valid?
         m.save
       else
-        m.errors
+        return m.errors
+      end
+      a = SettingValue.find(:first, :conditions => ["machine_id = ? and name = ?", m.id, attr])
+      if a
+        a.value = value
+        if a.valid?
+          a.save
+        else
+          a.errors
+        end
+      else
+        "Machine attribute #{attr} not found"
       end
     else
       "Machine #{ip} not found"

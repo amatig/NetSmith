@@ -7,6 +7,11 @@ namespace "ks" do
     puts output(LibKickstart.new.add_template(args[:file]))
   end
   
+  desc "Rimuove un template kickstart."
+  task :del_template, [:name_ks] do |t, args|
+    puts output(LibKickstart.new.del_template(args[:name_ks]))
+  end
+  
   desc "Lista dei kickstart attualizzati."
   task :list do
     puts output(LibKickstart.new.list)
