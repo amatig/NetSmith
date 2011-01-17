@@ -17,20 +17,20 @@
 class LibKickstart
   
   # Aggiunge un template kickstart.
-  # @param [String] file filename completo di percorso assoluto all'interno del disco.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
-  def add_template(file)
-    if File.exist?(file)
+  # @param [String] file_ks filename completo di percorso assoluto all'interno del disco.
+  # @return [Boolean] messaggio di esito dell'operazione.
+  def add_template(file_ks)
+    if File.exist?(file_ks)
       path = File.expand_path("../../../resources/templates", __FILE__)
-      File.copy(file, path)
+      File.copy(file_ks, path)
     else
-      "File #{file} not exist"
+      raise IOError, "File #{file_ks} don't exists"
     end
   end
   
   # Rimuove un template kickstart.
   # @param [String] name_ks nome di un template kickstart gia' nel sistema.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def del_template(name_ks)
     path = File.expand_path("../../../resources/templates", __FILE__)
     file = File.join(path, name_ks)
@@ -38,7 +38,7 @@ class LibKickstart
       File.delete(file)
       true
     else
-      "Kickstart template #{name_ks} not exist"
+      raise IOError, "Kickstart template #{name_ks} don't exists"
     end
   end
   
@@ -64,14 +64,12 @@ class LibKickstart
   
   # Attualizza un template kickstart per una macchina in gestione.
   # @param [String] ip indirizzo di una macchina installabile.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def actualize(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       values = {}
-      m.setting_values.each do |v|
-        values[v.name] = v.value
-      end
+      m.setting_values.each { |v| values[v.name] = v.value }
       path = File.expand_path("../../../resources", __FILE__)
       file = File.join(path, "templates", m.template)
       if File.exist?(file)
@@ -88,10 +86,10 @@ class LibKickstart
         end
         true
       else
-        "File #{file} not exist"
+        raise IOError, "Kickstart template #{file} don't exists"
       end
     else
-      "Machine #{ip} not found"
+      raise StandardError, "Machine #{ip} don't exists"
     end
   end
   
@@ -113,7 +111,7 @@ class LibKickstart
       end
       fields
     else
-      "Kickstart template #{name_ks} not exist"
+      raise IOError, "Kickstart template #{file} don't exists"
     end
   end
   

@@ -21,7 +21,7 @@ class LibServer
   # @param [String] conn_type tipo di connessione al server.
   # @param [String] hostname hostname del server.
   # @param [String] descr descrizione del server.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def add(ip, conn_type, hostname, descr)
     s = Server.new(:ip => ip, 
                     :conn_type => conn_type,
@@ -36,14 +36,14 @@ class LibServer
   
   # Rimuove un server in gestione.
   # @param [String] ip indirizzo del server.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def del(ip)
     s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
       s.destroy
       true
     else
-      "Server #{ip} not found"
+      raise StandardError, "Server #{ip} don't exists"
     end
   end
   
@@ -51,7 +51,7 @@ class LibServer
   # @param [String] ip indirizzo del server.
   # @param [String] attr nome dell'attributo del server.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo del server.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def edit(ip, attr, value)
     s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
@@ -62,7 +62,7 @@ class LibServer
         s.errors
       end
     else
-      "Server #{ip} not found"
+      raise StandardError, "Server #{ip} don't exists"
     end
   end
   

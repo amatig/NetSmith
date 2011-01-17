@@ -3,8 +3,8 @@
 namespace "ks" do
   
   desc "Aggiunge un template kickstart."
-  task :add_template, [:file] do |t, args|
-    puts output(LibKickstart.new.add_template(args[:file]))
+  task :add_template, [:file_ks] do |t, args|
+    puts output(LibKickstart.new.add_template(args[:file_ks]))
   end
   
   desc "Rimuove un template kickstart."

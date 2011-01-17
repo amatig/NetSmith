@@ -1,9 +1,8 @@
 class NsBase < ActiveRecord::Base
-  after_create CapTool.new()
-
   self.abstract_class = true
-
-
+  
+  after_create CapTool.new
+  
   # def self.find(*args)
   #   cap = nil
   #   if(args[1]!=nil and args[1].has_key?(:cap))
@@ -18,5 +17,5 @@ class NsBase < ActiveRecord::Base
   #     return nil
   #   end
   # end
-
+  
 end

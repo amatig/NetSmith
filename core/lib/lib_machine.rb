@@ -23,7 +23,7 @@ class LibMachine
   # @param [String] template kickstart template per l'installazione della macchina.
   # @param [String] descr descrizione della macchina.
   # @param [Hash] values valori di attualizzazione per il template della macchina.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def add(ip, mac, hostname, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
@@ -53,7 +53,7 @@ class LibMachine
   
   # Rimuove una macchina installabile.
   # @param [String] ip indirizzo di una macchina.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def del(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
@@ -63,7 +63,7 @@ class LibMachine
       m.destroy
       true
     else
-      "Machine #{ip} not found"
+      raise StandardError, "Machine #{ip} don't exists"
     end
   end
   
@@ -71,7 +71,7 @@ class LibMachine
   # @param [String] ip indirizzo di una macchina.
   # @param [String] attr nome dell'attributo di una macchina.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo di una macchina.
-  # @return [Boolean/String] messaggio di esito dell'operazione.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def edit(ip, attr, value)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
@@ -89,11 +89,10 @@ class LibMachine
         else
           a.errors
         end
-      else
-        "Machine attribute #{attr} not found"
       end
+      true
     else
-      "Machine #{ip} not found"
+      raise StandardError, "Machine #{ip} don't exists"
     end
   end
   
