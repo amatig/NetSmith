@@ -23,8 +23,8 @@ module LibServer
   # @return [Boolean] messaggio di esito dell'operazione.
   def LibServer.add(ip, conn_type,  descr)
     s = Server.new(:ip => ip, 
-                    :conn_type => conn_type,
-                    :descr => descr)
+                   :conn_type => conn_type,
+                   :descr => descr)
     if s.valid?
       s.save
     else
@@ -33,25 +33,25 @@ module LibServer
   end
   
   # Rimuove un server in gestione.
-  # @param [String] ip indirizzo del server.
+  # @param [Integer/String] server id o indirizzo del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibServer.del(ip)
-    s = Server.find(:first, :conditions => ["ip = ?", ip])
+  def LibServer.del(server)
+    s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
     if s
       s.destroy
       true
     else
-      raise StandardError, "Server #{ip} don't exists"
+      raise StandardError, "Server #{server} don't exists"
     end
   end
   
   # Modifica un attributo di un server in gestione.
-  # @param [String] ip indirizzo del server.
+  # @param [Integer/String] server id o indirizzo del server.
   # @param [String] attr nome dell'attributo del server.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibServer.edit(ip, attr, value)
-    s = Server.find(:first, :conditions => ["ip = ?", ip])
+  def LibServer.edit(server, attr, value)
+    s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
     if s
       s[attr] = value
       if s.valid?
@@ -60,12 +60,12 @@ module LibServer
         s.errors
       end
     else
-      raise StandardError, "Server #{ip} don't exists"
+      raise StandardError, "Server #{server} don't exists"
     end
   end
   
   # Lista dei server in gestione.
-  # @return [Array<String>] lista dei server.
+  # @return [Array<Server>] lista dei server.
   def LibServer.list
     Server.all
   end

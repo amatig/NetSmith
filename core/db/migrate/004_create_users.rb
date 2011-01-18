@@ -5,7 +5,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string :username
       t.integer :userid
       t.text :sslkey
-      t.text :descr
     end
     Capability.create(:cap_code => "0-user-#{LibCapability.generate_cap}")
   end

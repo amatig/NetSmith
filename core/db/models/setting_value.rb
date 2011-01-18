@@ -6,7 +6,7 @@ class SettingValue < ActiveRecord::Base
   validates_presence_of :value
   
   def to_s
-    return "#{machine_id} - #{name} => #{value}"
+    return "#{machine.ip} - #{name} => #{value}"
   end
   
 end

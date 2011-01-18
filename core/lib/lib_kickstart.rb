@@ -63,10 +63,10 @@ module LibKickstart
   end
   
   # Attualizza un template kickstart per una macchina in gestione.
-  # @param [String] ip indirizzo di una macchina installabile.
+  # @param [Integer/String] machine id o indirizzo di una macchina installabile.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibKickstart.actualize(ip)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+  def LibKickstart.actualize(machine)
+    m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       values = {}
       m.setting_values.each { |v| values[v.name] = v.value }
@@ -89,7 +89,7 @@ module LibKickstart
         raise IOError, "Kickstart template #{file} don't exists"
       end
     else
-      raise StandardError, "Machine #{ip} don't exists"
+      raise StandardError, "Machine #{machine} don't exists"
     end
   end
   

@@ -23,8 +23,8 @@ namespace "ks" do
   end
   
   desc "Attualizza un template kickstart per una macchina installabile."
-  task :actualize, [:ip] do |t, args|
-    puts output(LibKickstart.actualize(args[:ip]))
+  task :actualize, [:machine] do |t, args|
+    puts output(LibKickstart.actualize(args[:machine]))
   end
   
   desc "Ritorna i campi parametrici di un template kickstart."

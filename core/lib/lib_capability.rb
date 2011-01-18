@@ -16,7 +16,7 @@
 
 module LibCapability
   
-  # Callback per il post creazione di un entita'.
+  # Callback per generare una capability dopo ogni creazione di una entita'.
   def LibCapability.after_create(e)
     Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{generate_cap}")
   end
@@ -30,30 +30,39 @@ module LibCapability
   # Compone codici di capabily.
   # @param [Integer] id chiave univoca dell'entita' della tabella.
   # @param [String] tab nome della tabella.
-  # @param [Integer/String] cap numero random.
+  # @param [String/Integer] cap numero random.
   # @return [String] codice di capability.
   def LibCapability.build_cap_code(id, tab, cap)
     "#{id}-#{tab}-#{cap}"
   end
-
+  
+  # Dato un codice di capability ritorna solo la parte del codice random.
+  # @param [String] cap_code codice di capability da strippare.
+  # @return [String] numero cap della capability.
   def LibCapability.strip_cap(cap_code)
     cap.cap_code.split('-')[2]
   end
   
+  # Torna una capability.
+  # @param [Integer] id chiave univoca dell'entita' della tabella.
+  # @param [String] tab nome della tabella.
+  # @return [Capability] oggetto di tipo capability.
   def LibCapability.find_cap_code(id, tab)
     Capability.find(:first, 
-                    :conditions => [ "cap_code LIKE ?","#{id}-#{tab}-%"])
+                    :conditions => ["cap_code LIKE ?", "#{id}-#{tab}-%"])
   end
-
+  
+  # Aggiunge un mapping tra utente e capability.
+  # @param [User/Integer] user oggetto o indice dell'utente.
+  # @return [Boolean] messaggio di esito dell'operazione.
   def LibCapability.add_map(user, cap_code)
     c = CapabilityMapping.new(:user_id => user,
-                              :rand_code =>cap_code)
+                              :rand_code => cap_code)
     if c.valid?
       c.save
     else
       c.errors
     end
-    c
   end
   
 end

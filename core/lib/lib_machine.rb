@@ -52,7 +52,7 @@ module LibMachine
   end
   
   # Rimuove una macchina installabile.
-  # @param [String] machine id o indirizzo di una macchina.
+  # @param [Integer/String] machine id o indirizzo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
   def LibMachine.del(machine)
     m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
@@ -68,7 +68,7 @@ module LibMachine
   end
   
   # Modifica un attributo di una macchina installabile.
-  # @param [String] machine id o indirizzo di una macchina.
+  # @param [Integer/String] machine id o indirizzo di una macchina.
   # @param [String] attr nome dell'attributo di una macchina.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
@@ -98,7 +98,7 @@ module LibMachine
   end
   
   # Genera i file necessari all'installare di una macchina.
-  # @param [String] machine id or indirizzo di una macchina.
+  # @param [Integer/String] machine id or indirizzo di una macchina.
   # @param [String] netsmith_ip indirizzo pubblico della macchina in cui e' installato il sistema.
   # @param [String] options stringa di opzioni passabili al menu boot pxe.
   def LibMachine.generate(machine, netsmith_ip, pxe_options = "")
@@ -132,12 +132,12 @@ module LibMachine
   end
   
   # Crea un server gestibile da una macchine installabile.
-  # @param [String] machine id or indirizzo di una macchina.
+  # @param [Integer/String] machine id or indirizzo di una macchina.
   # @param [String] conn_type tipo di connessione al server.
   def LibMachine.to_server(machine, conn_type)
     m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
-      LibServer.new.add(m.ip, conn_type, m.hostname, m.descr)
+      LibServer.new.add(m.ip, conn_type, m.descr)
     else
       raise StandardError, "Machine #{machine} don't exists"
     end    

@@ -9,13 +9,13 @@ namespace "server" do
   end
   
   desc "Modifica un attributo di un server in gestione."
-  task :edit, [:ip, :attr, :value] do |t, args|
-    puts output(LibServer.edit(args[:ip], args[:attr], args[:value]))
+  task :edit, [:server, :attr, :value] do |t, args|
+    puts output(LibServer.edit(args[:server], args[:attr], args[:value]))
   end
   
   desc "Rimuove un server in gestione."
-  task :del, [:ip] do |t, args|
-    puts output(LibServer.del(args[:ip]))
+  task :del, [:server] do |t, args|
+    puts output(LibServer.del(args[:server]))
   end
   
   desc "Lista dei server in gestione."
