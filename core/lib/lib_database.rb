@@ -26,7 +26,7 @@ class LibDatabase
     dbconfig["database"] = File.join(path, dbconfig["database"])
     ActiveRecord::Base.establish_connection(dbconfig)
     ActiveRecord::Base.logger = Logger.new(STDERR)
-    ActiveRecord::Base.logger.level = Logger::INFO
+    ActiveRecord::Base.logger.level = Logger::DEBUG
   end
   
   # Migrazione del db tramite scripts in core/db/migrate.

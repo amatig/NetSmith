@@ -17,7 +17,7 @@
 class NsBase < ActiveRecord::Base
   self.abstract_class = true
   
-  after_create LibCapability.new
+  after_create LibCapability
   
   # def self.find(*args)
   #   cap = nil

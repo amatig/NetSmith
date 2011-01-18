@@ -52,12 +52,16 @@ class LibUser
     user = Etc.getpwnam(username)
     u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
     if u
-      u.delete
+      u.destroy
     else
       "User #{username} do not exists"
     end
   end
-
+  
+  def list()
+    User.all
+  end
+  
   def update_ssl_key(username, keyfile)
     user = Etc.getpwnam(username)
     if user.uid == Process.uid or Process.uid == 0
@@ -73,7 +77,42 @@ class LibUser
         "Can't find #{username} into the system"
       end
     else
-      "You can't modifi public file for #{username} user, use root account"
+      "You can't modify public key file for #{username} user, use root account"
     end
   end
+  
+  def add_access_to(username, server_ip)
+    user = Etc.getpwnam(username)
+    u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
+    if not u
+      return "User #{username} doesn't exists"
+    end
+    s = Server.find(:first, :conditions => ["ip=?",server_ip])
+    if not s
+      return "No such server defined with this ip #{server_ip}"
+    end
+    cap = Capability.find(:first, :conditions => [ "cap_code LIKE ?","#{s.id}-server-%"])
+    if not cap
+      return "No such capability for server #{server_ip}"
+    end
+    cap_code = cap.cap_code.split('-')[2]
+    c = CapabilityMapping.new(:user_id => u,
+                              :rand_code =>cap_code)
+    if c.valid?
+      c.save
+    else
+      c.errors
+    end
+  end
+  
+  def list_capability()
+    uid = Process.uid
+    u = User.find(:first, :conditions => [ "userid=?", uid])
+    if not u
+      user = Etc.getpwid(uid)
+      return "User #{user.name} isn't added tu NetSmith"
+    end
+    u.capability_mappings
+  end
+  
 end

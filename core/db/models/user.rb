@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  has_many :capability_mappings, :dependent => :destroy
+
   validates_presence_of :username
   validates_presence_of :userid
   validates_presence_of :sslkey
