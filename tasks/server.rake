@@ -3,9 +3,9 @@
 namespace "server" do
   
   desc "Aggiunge un nuovo server da gestire."
-  task :add, [:ip, :conn_type, :hostname, :descr] do |t, args|
+  task :add, [:ip, :conn_type, :descr] do |t, args|
     ENV["HOSTNAME"] = nil
-    puts output(LibServer.add(args[:ip], args[:conn_type], args[:hostname], args[:descr]))
+    puts output(LibServer.add(args[:ip], args[:conn_type], args[:descr]))
   end
   
   desc "Modifica un attributo di un server in gestione."

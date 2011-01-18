@@ -19,13 +19,11 @@ module LibServer
   # Aggiunge un nuovo server da gestire.
   # @param [String] ip indirizzo del server.
   # @param [String] conn_type tipo di connessione al server.
-  # @param [String] hostname hostname del server.
   # @param [String] descr descrizione del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibServer.add(ip, conn_type, hostname, descr)
+  def LibServer.add(ip, conn_type,  descr)
     s = Server.new(:ip => ip, 
                     :conn_type => conn_type,
-                    :hostname => hostname,
                     :descr => descr)
     if s.valid?
       s.save

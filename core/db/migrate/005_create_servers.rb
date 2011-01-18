@@ -4,7 +4,6 @@ class CreateServers < ActiveRecord::Migration
     create_table :servers do |t|
       t.string :ip, :limit => 15
       t.string :conn_type, :limit => 15
-      t.string :hostname
       t.text :descr
     end
     Capability.create(:cap_code => "0-server-#{LibCapability.generate_cap}")
