@@ -14,28 +14,26 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-module LibCapability
+class LibCapability
   
   # Callback per il post creazione di un entita'.
-  def ns_after_create
-    Capability.create(:cap_code => "#{self.id}-#{self.class.to_s.downcase}-#{generate_cap}")
+  def after_create(e)
+    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{LibCapability.generate_cap}")
   end
   
-end
-
-# More utils for capabilities
-
-# Random di 20 cifre per i codici di capabilities.
-# @return [String] numero di 20 cifre random.
-def generate_cap
-  return (0...20).collect { rand(10) }.join 
-end
-
-# Compone codici di capabily.
-# @param [Integer] id chiave univoca dell'entita' della tabella.
-# @param [String] tab nome della tabella.
-# @param [Integer/String] cap numero random.
-# @return [String] codice di capability.
-def build_cap_code(id, tab, cap)
-  return "#{id}-#{tab}-#{cap}"
+  # Random di 20 cifre per i codici di capabilities.
+  # @return [String] numero di 20 cifre random.
+  def self.generate_cap
+    return (0...20).collect { rand(10) }.join 
+  end
+  
+  # Compone codici di capabily.
+  # @param [Integer] id chiave univoca dell'entita' della tabella.
+  # @param [String] tab nome della tabella.
+  # @param [Integer/String] cap numero random.
+  # @return [String] codice di capability.
+  def self.build_cap_code(id, tab, cap)
+    return "#{id}-#{tab}-#{cap}"
+  end
+  
 end

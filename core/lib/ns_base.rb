@@ -15,10 +15,9 @@
 # Giovanni Amati, Domenico Chierico
 
 class NsBase < ActiveRecord::Base
-  include LibCapability
   self.abstract_class = true
   
-  after_create :ns_after_create
+  after_create LibCapability.new
   
   # def self.find(*args)
   #   cap = nil
