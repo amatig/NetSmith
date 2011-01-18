@@ -3,5 +3,5 @@
 *.lock
 doc
 core/db/netsmith.sqlite3
-resources/ks
+resources/ks/*
 tftpboot/pxelinux.cfg/*
