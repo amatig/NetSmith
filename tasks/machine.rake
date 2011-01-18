@@ -13,8 +13,13 @@ namespace "machine" do
   end
   
   desc "Genera i file necessari all'installare di una macchina."
-  task :generate, [:ip] do |t, args|
-    puts output(LibMachine.new.generate(args[:ip]))
+  task :generate, [:ip, :netsmith_ip, :pxe_options] do |t, args|
+    puts output(LibMachine.new.generate(args[:ip], args[:netsmith_ip], args[:pxe_options]))
+  end
+  
+  desc "Crea un server gestibile da una macchine installabile."
+  task :to_server, [:ip, :conn_type] do |t, args|
+    puts output(LibMachine.new.to_server(args[:ip], args[:conn_type]))
   end
   
   desc "Aggiunge una nuova macchina installabile."

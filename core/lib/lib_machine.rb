@@ -99,7 +99,11 @@ class LibMachine
     end
   end
   
-  def generate(ip)
+  # Genera i file necessari all'installare di una macchina.
+  # @param [String] ip indirizzo di una macchina.
+  # @param [String] netsmith_ip indirizzo pubblico della macchina in cui e' installato il sistema.
+  # @param [String] options stringa di opzioni passabili al menu boot pxe.
+  def generate(ip, netsmith_ip, pxe_options = "")
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       path = File.expand_path("../../../", __FILE__)
@@ -109,15 +113,15 @@ class LibMachine
         template = Liquid::Template.parse(f.read)
         f.close
         mac = m.mac.gsub(":", "-")
+        f = File.new(File.join(path, "tftpboot/pxelinux.cfg", "01-#{mac}".downcase), "w")
         text = template.render({
                                  "vmlinuz" => "images/#{m.distro}/images/pxeboot/vmlinuz",
                                  "initrd" => "images/#{m.distro}/images/pxeboot/initrd.img",
-                                 "ip" => "192.168.56.1",
+                                 "ip" => netsmith_ip,
                                  "kickstart" => "#{mac}-#{m.template}",
                                  "distro" => m.distro,
-                                 "options" => ""
+                                 "options" => pxe_options
                                })
-        f = File.new(File.join(path, "tftpboot/pxelinux.cfg", "01-#{mac}".downcase), "w")
         f.write(text)
         f.close
         true
@@ -127,6 +131,18 @@ class LibMachine
     else
       raise StandardError, "Machine #{ip} don't exists"
     end      
+  end
+  
+  # Crea un server gestibile da una macchine installabile.
+  # @param [String] ip indirizzo di una macchina.
+  # @param [String] conn_type tipo di connessione al server.
+  def to_server(ip, conn_type)
+    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+    if m
+      LibServer.new.add(m.ip, conn_type, m.hostname, m.descr)
+    else
+      raise StandardError, "Machine #{ip} don't exists"
+    end    
   end
   
   # Lista delle macchine installabili.
