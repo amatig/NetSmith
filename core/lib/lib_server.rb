@@ -14,7 +14,7 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class LibServer
+module LibServer
   
   # Aggiunge un nuovo server da gestire.
   # @param [String] ip indirizzo del server.
@@ -22,7 +22,7 @@ class LibServer
   # @param [String] hostname hostname del server.
   # @param [String] descr descrizione del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def add(ip, conn_type, hostname, descr)
+  def LibServer.add(ip, conn_type, hostname, descr)
     s = Server.new(:ip => ip, 
                     :conn_type => conn_type,
                     :hostname => hostname,
@@ -37,7 +37,7 @@ class LibServer
   # Rimuove un server in gestione.
   # @param [String] ip indirizzo del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def del(ip)
+  def LibServer.del(ip)
     s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
       s.destroy
@@ -52,7 +52,7 @@ class LibServer
   # @param [String] attr nome dell'attributo del server.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo del server.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def edit(ip, attr, value)
+  def LibServer.edit(ip, attr, value)
     s = Server.find(:first, :conditions => ["ip = ?", ip])
     if s
       s[attr] = value
@@ -68,7 +68,7 @@ class LibServer
   
   # Lista dei server in gestione.
   # @return [Array<String>] lista dei server.
-  def list
+  def LibServer.list
     Server.all
   end
   
