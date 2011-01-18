@@ -3,6 +3,7 @@ class CapabilityMapping < ActiveRecord::Base
 
   validates_presence_of :user_id
   validates_presence_of :rand_code
+  validates_uniqueness_of :user_id, :scope => :rand_code
 
   def to_s
     return "#{user.username}-->#{rand_code}"

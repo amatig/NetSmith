@@ -27,7 +27,7 @@ module LibUser
     sslf = File.open(keyfile, "r")
     sslpkey = sslf.read
     sslf.close
-    
+
     user = Etc.getpwnam(username)
     
     if user
@@ -42,6 +42,8 @@ module LibUser
     else
       "User #{username} don't exists"
     end
+  rescue Exception => detail
+    p detail
   end
   
   def LibUser.del(username)
@@ -82,7 +84,10 @@ module LibUser
   
   def LibUser.add_access_to(username, server_ip)
     user = Etc.getpwnam(username)
-    u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
+    u = User.find(:first, 
+                  :conditions => ["username=? and userid=?", 
+                                  user.name, 
+                                  user.uid])
     if not u
       return "User #{username} doesn't exists"
     end
@@ -90,18 +95,11 @@ module LibUser
     if not s
       return "No such server defined with this ip #{server_ip}"
     end
-    cap = Capability.find(:first, :conditions => [ "cap_code LIKE ?","#{s.id}-server-%"])
+    cap = LibCapability.find_cap_code(s.id,s.class.to_s.downcase)
     if not cap
       return "No such capability for server #{server_ip}"
     end
-    cap_code = cap.cap_code.split('-')[2]
-    c = CapabilityMapping.new(:user_id => u,
-                              :rand_code =>cap_code)
-    if c.valid?
-      c.save
-    else
-      c.errors
-    end
+    LibCapability.add_map(u,cap.cap_code)
   end
   
   def LibUser.list_capabilities

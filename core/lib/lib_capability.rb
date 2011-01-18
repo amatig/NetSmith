@@ -18,13 +18,13 @@ module LibCapability
   
   # Callback per il post creazione di un entita'.
   def LibCapability.after_create(e)
-    return Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{generate_cap}")
   end
   
   # Random di 20 cifre per i codici di capabilities.
   # @return [String] numero di 20 cifre random.
   def LibCapability.generate_cap
-    return (0...20).collect { rand(10) }.join 
+    (0...20).collect { rand(10) }.join 
   end
   
   # Compone codici di capabily.
@@ -33,7 +33,27 @@ module LibCapability
   # @param [Integer/String] cap numero random.
   # @return [String] codice di capability.
   def LibCapability.build_cap_code(id, tab, cap)
-    return "#{id}-#{tab}-#{cap}"
+    "#{id}-#{tab}-#{cap}"
+  end
+
+  def LibCapability.strip_cap(cap_code)
+    cap.cap_code.split('-')[2]
+  end
+  
+  def LibCapability.find_cap_code(id, tab)
+    Capability.find(:first, 
+                    :conditions => [ "cap_code LIKE ?","#{id}-#{tab}-%"])
+  end
+
+  def LibCapability.add_map(user, cap_code)
+    c = CapabilityMapping.new(:user_id => user,
+                              :rand_code =>cap_code)
+    if c.valid?
+      c.save
+    else
+      c.errors
+    end
+    c
   end
   
 end
