@@ -13,7 +13,7 @@ install
 network --bootproto {{bootproto|text}} --hostname {{hostname|text}}
 
 # Repository Location
-url --url=http://192.168.56.1/pxe/dist/centos-5.5
+url --url=http://{{netsmith_ip|text}}/NetSmith/tftpboot/images/centos-5.5
 
 #Root password
 #rootpw --iscrypted $1$rB3lJzDT$PmMFJJiLgVPbnvJF6UZ1x/

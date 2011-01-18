@@ -24,7 +24,14 @@ require "logger"
 require "ftools"
 
 # Require all libs
-Dir.glob("core/lib/*.rb").each { |r| require r }
+require "core/lib/ns_utils"
+require "core/lib/lib_database"
+require "core/lib/lib_capability"
+require "core/lib/ns_base"
+require "core/lib/lib_kickstart"
+require "core/lib/lib_server"
+require "core/lib/lib_machine"
+require "core/lib/lib_user"
 
 # Estabilish connection database
 LibDatabase.instance

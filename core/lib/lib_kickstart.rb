@@ -17,28 +17,28 @@
 class LibKickstart
   
   # Aggiunge un template kickstart.
-  # @param [String] file_ks filename completo di percorso assoluto all'interno del disco.
+  # @param [String] file filename completo di percorso assoluto all'interno del disco.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def add_template(file_ks)
-    if File.exist?(file_ks)
+  def add_template(file)
+    if File.exist?(file)
       path = File.expand_path("../../../resources/templates", __FILE__)
-      File.copy(file_ks, path)
+      File.copy(file, path)
     else
-      raise IOError, "File #{file_ks} don't exists"
+      raise IOError, "File #{file} don't exists"
     end
   end
   
   # Rimuove un template kickstart.
-  # @param [String] name_ks nome di un template kickstart gia' nel sistema.
+  # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def del_template(name_ks)
+  def del_template(name)
     path = File.expand_path("../../../resources/templates", __FILE__)
-    file = File.join(path, name_ks)
+    file = File.join(path, name)
     if File.exist?(file)
       File.delete(file)
       true
     else
-      raise IOError, "Kickstart template #{name_ks} don't exists"
+      raise IOError, "Kickstart template #{name} don't exists"
     end
   end
   
@@ -94,11 +94,11 @@ class LibKickstart
   end
   
   # Mostra i campi parametrici di un template kickstart.
-  # @param [String] name_ks nome di un template kickstart gia' nel sistema.
+  # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Hash] dizionario delle variabili nel template { nome => tipo, ... }.
-  def get_fields(name_ks)
+  def get_fields(name)
     path = File.expand_path("../../../resources/templates", __FILE__)
-    file = File.join(path, name_ks)
+    file = File.join(path, name)
     if File.exist?(file)
       f = File.open(file, "r")
       template = Liquid::Template.parse(f.read)

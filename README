@@ -26,3 +26,45 @@ bundle install
 In alternativa, installare singolarmente ogni gemma con il comando:
 
 gem install <nome pacchetto>
+
+== Beta Install
+
+Copiare la cartella di NetSmith in /var/www/html o in alternativa fornire da apache un accesso alla cartella.
+Modificare se necessario tutti i permessi come utente e non root.
+
+== Beta Config
+
+Modificare il file /etc/xinit.d/tftp per puntare alla cartella tftpboot di NetSmith:
+
+service tftp
+{
+        disable = no
+        socket_type             = dgram
+        protocol                = udp
+        wait                    = yes
+        user                    = root
+        server                  = /usr/sbin/in.tftpd
+        server_args             = -s /var/www/html/NetSmith/tftpboot
+        per_source              = 11
+        cps                     = 100 2
+        flags                   = IPv4
+}
+
+Modificare il file /etc/dhcp/dhcpd.conf come segue:
+
+allow booting;
+allow bootp;
+option option-128 code 128 = string;
+option option-129 code 129 = text;
+next-server <ip della macchina>;
+
+shared-network "PXE" {
+               subnet <subnet in base all'ip> netmask 255.255.255.0 {
+        }
+}
+
+host prova {
+     hardware ethernet 08:00:27:57:07:E6;
+     fixed-address 192.168.56.2;
+     filename "/pxelinux.0";
+}

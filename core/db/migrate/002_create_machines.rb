@@ -5,6 +5,7 @@ class CreateMachines < ActiveRecord::Migration
       t.string :ip, :limit => 15
       t.string :mac, :limit => 17
       t.string :hostname
+      t.string :distro
       t.string :template
       t.text :descr
     end

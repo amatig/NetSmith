@@ -20,14 +20,16 @@ class LibMachine
   # @param [String] ip indirizzo della macchina.
   # @param [String] mac MAC Address della macchina.
   # @param [String] hostname hostname della macchina.
+  # @param [String] distro nome della distro da l'installazione sulla macchina.
   # @param [String] template kickstart template per l'installazione della macchina.
   # @param [String] descr descrizione della macchina.
   # @param [Hash] values valori di attualizzazione per il template della macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def add(ip, mac, hostname, template, descr, values = {})
+  def add(ip, mac, hostname, distro, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
                     :hostname => hostname,
+                    :distro => distro,
                     :template => template,
                     :descr => descr)
     if m.valid?
@@ -84,16 +86,47 @@ class LibMachine
       a = SettingValue.find(:first, :conditions => ["machine_id = ? and name = ?", m.id, attr])
       if a
         a.value = value
-        if a.valid?
-          a.save
-        else
-          a.errors
-        end
+      else
+        a = SettingValue.new(:machine_id => m.id, :name => attr, :value => value)
       end
-      true
+      if a.valid?
+        a.save
+      else
+        a.errors
+      end
     else
       raise StandardError, "Machine #{ip} don't exists"
     end
+  end
+  
+  def generate(ip)
+    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+    if m
+      path = File.expand_path("../../../", __FILE__)
+      file = File.join(path, "resources/templates", "pxe.template")
+      if File.exist?(file)
+        f = File.open(file, "r")
+        template = Liquid::Template.parse(f.read)
+        f.close
+        mac = m.mac.gsub(":", "-")
+        text = template.render({
+                                 "vmlinuz" => "images/#{m.distro}/images/pxeboot/vmlinuz",
+                                 "initrd" => "images/#{m.distro}/images/pxeboot/initrd.img",
+                                 "ip" => "192.168.56.1",
+                                 "kickstart" => "#{mac}-#{m.template}",
+                                 "distro" => m.distro,
+                                 "options" => ""
+                               })
+        f = File.new(File.join(path, "tftpboot/pxelinux.cfg", "01-#{mac}".downcase), "w")
+        f.write(text)
+        f.close
+        true
+      else
+        raise IOError, "PXE template #{file} don't exists"
+      end
+    else
+      raise StandardError, "Machine #{ip} don't exists"
+    end      
   end
   
   # Lista delle macchine installabili.

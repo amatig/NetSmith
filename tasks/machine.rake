@@ -12,10 +12,15 @@ namespace "machine" do
     puts output(LibMachine.new.edit(args[:ip], args[:attr], args[:value]))
   end
   
+  desc "Genera i file necessari all'installare di una macchina."
+  task :generate, [:ip] do |t, args|
+    puts output(LibMachine.new.generate(args[:ip]))
+  end
+  
   desc "Aggiunge una nuova macchina installabile."
-  task :add, [:ip, :mac, :hostname, :name_ks, :descr] do |t, args|
+  task :add, [:ip, :mac, :hostname, :distro, :template, :descr] do |t, args|
     ENV["HOSTNAME"] = nil
-    fields = LibKickstart.new.get_fields(args[:name_ks])
+    fields = LibKickstart.new.get_fields(args[:template])
     if fields.kind_of?(Hash)
       values = {}
       fields.each do |k, v|
@@ -25,7 +30,8 @@ namespace "machine" do
       puts output(LibMachine.new.add(args[:ip], 
                                      args[:mac], 
                                      args[:hostname], 
-                                     args[:name_ks], 
+                                     args[:distro],
+                                     args[:template], 
                                      args[:descr],
                                      values))
     else

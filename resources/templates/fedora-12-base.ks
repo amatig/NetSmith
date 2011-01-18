@@ -8,15 +8,15 @@ timezone US/Eastern
 auth --useshadow --enablemd5
 selinux --disabled
 firewall --disabled
-network --bootproto=dhcp --device=eth0 --onboot=on
-network --hostname=prova123
+network --bootproto={{bootproto|text}} --device=eth0 --onboot=on
+network --hostname={{hostname|text}}
 services --enabled=network
-url --url http://10.1.1.1/fedora12
+url --url http://{{netsmith_ip|text}}/NetSmith/tftpboot/images/fedora-12
 
 # Uncomment the next line
 # to make the root password be thincrust
 # By default the root password is emptied
-rootpw delco123
+rootpw {{rootpw|passwd}}
 
 #
 # Partition Information. Change this as necessary

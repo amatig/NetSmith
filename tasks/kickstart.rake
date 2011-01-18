@@ -3,13 +3,13 @@
 namespace "ks" do
   
   desc "Aggiunge un template kickstart."
-  task :add_template, [:file_ks] do |t, args|
-    puts output(LibKickstart.new.add_template(args[:file_ks]))
+  task :add_template, [:file] do |t, args|
+    puts output(LibKickstart.new.add_template(args[:file]))
   end
   
   desc "Rimuove un template kickstart."
-  task :del_template, [:name_ks] do |t, args|
-    puts output(LibKickstart.new.del_template(args[:name_ks]))
+  task :del_template, [:name] do |t, args|
+    puts output(LibKickstart.new.del_template(args[:name]))
   end
   
   desc "Lista dei kickstart attualizzati."
@@ -28,8 +28,8 @@ namespace "ks" do
   end
   
   desc "Mostra i campi parametrici di un template kickstart."
-  task :get_fields, [:name_ks] do |t, args|
-    puts output(LibKickstart.new.get_fields(args[:name_ks]))
+  task :get_fields, [:name] do |t, args|
+    puts output(LibKickstart.new.get_fields(args[:name]))
   end
   
 end
