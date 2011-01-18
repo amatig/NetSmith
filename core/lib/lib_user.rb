@@ -16,19 +16,18 @@
 
 class LibUser
  
-  # Aggiungere una nuova utente.
+  # Aggiungere un nuovo utente.
   
   def add(username, keyfile)
     if Process.uid!=0
       return "use sudo or root for adding new user"
     end
-    if(not File.exist?(keyfile))
-      return "File #{keyfile} don't exists"
+    if(not File.exist?(keyfile.to_s))
+      return "File _#{keyfile}_ don't exists"
     end
     sslf = File.open(keyfile,"r")
     sslpkey = sslf.read
     sslf.close
-
     user = Etc.getpwnam(username)
 
     if user
@@ -43,6 +42,8 @@ class LibUser
     else
       "User #{username} don't exists"
     end
+  rescue Exception => detail
+    p detail
   end
 
   def del(username)
@@ -83,7 +84,10 @@ class LibUser
   
   def add_access_to(username, server_ip)
     user = Etc.getpwnam(username)
-    u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
+    u = User.find(:first, 
+                  :conditions => ["username=? and userid=?", 
+                                  user.name, 
+                                  user.uid])
     if not u
       return "User #{username} doesn't exists"
     end
@@ -91,18 +95,11 @@ class LibUser
     if not s
       return "No such server defined with this ip #{server_ip}"
     end
-    cap = Capability.find(:first, :conditions => [ "cap_code LIKE ?","#{s.id}-server-%"])
+    cap = LibCapability.find_cap_code(s.id,s.class.to_s.downcase)
     if not cap
       return "No such capability for server #{server_ip}"
     end
-    cap_code = cap.cap_code.split('-')[2]
-    c = CapabilityMapping.new(:user_id => u,
-                              :rand_code =>cap_code)
-    if c.valid?
-      c.save
-    else
-      c.errors
-    end
+    LibCapability.add_map(u,cap.cap_code)
   end
   
   def list_capability()

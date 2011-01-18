@@ -6,7 +6,7 @@ class Server < NsBase
   validates_uniqueness_of :ip
   
   def to_s
-    return "#{ip}\t#{conn_type}\t#{hostname}\t#{descr}"
+    return "#{id})#{ip}\t#{conn_type}\t#{hostname}\t#{descr}"
   end
   
 end

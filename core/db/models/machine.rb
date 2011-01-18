@@ -11,7 +11,7 @@ class Machine < ActiveRecord::Base
   validates_uniqueness_of :mac
   
   def to_s
-    return "#{ip}\t#{mac}\t#{hostname}\t#{distro}\t#{template}\t#{descr}"
+    return "#{id})#{ip}\t#{mac}\t#{hostname}\t#{distro}\t#{template}\t#{descr}"
   end
   
 end
