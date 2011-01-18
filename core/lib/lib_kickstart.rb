@@ -14,12 +14,12 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class LibKickstart
+module LibKickstart
   
   # Aggiunge un template kickstart.
   # @param [String] file filename completo di percorso assoluto all'interno del disco.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def add_template(file)
+  def LibKickstart.add_template(file)
     if File.exist?(file)
       path = File.expand_path("../../../resources/templates", __FILE__)
       File.copy(file, path)
@@ -31,7 +31,7 @@ class LibKickstart
   # Rimuove un template kickstart.
   # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def del_template(name)
+  def LibKickstart.del_template(name)
     path = File.expand_path("../../../resources/templates", __FILE__)
     file = File.join(path, name)
     if File.exist?(file)
@@ -44,7 +44,7 @@ class LibKickstart
   
   # Lista dei kickstart attualizzati.
   # @return [Array<String>] lista dei file.
-  def list
+  def LibKickstart.list
     path = File.expand_path("../../../resources/ks", __FILE__)
     files = Dir.new(path).entries
     files.delete(".")
@@ -54,7 +54,7 @@ class LibKickstart
   
   # Lista dei template kickstart.
   # @return [Array<String>] lista dei file.
-  def list_templates
+  def LibKickstart.list_templates
     path = File.expand_path("../../../resources/templates", __FILE__)
     files = Dir.new(path).entries
     files.delete(".")
@@ -65,7 +65,7 @@ class LibKickstart
   # Attualizza un template kickstart per una macchina in gestione.
   # @param [String] ip indirizzo di una macchina installabile.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def actualize(ip)
+  def LibKickstart.actualize(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       values = {}
@@ -96,7 +96,7 @@ class LibKickstart
   # Ritorna i campi parametrici di un template kickstart.
   # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Hash] dizionario delle variabili nel template { nome => tipo, ... }.
-  def get_fields(name)
+  def LibKickstart.get_fields(name)
     path = File.expand_path("../../../resources/templates", __FILE__)
     file = File.join(path, name)
     if File.exist?(file)
