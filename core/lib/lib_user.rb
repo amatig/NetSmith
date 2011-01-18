@@ -1,6 +1,6 @@
-# Classe per la gestione degli utenti.
+# Modulo per la gestione degli utenti.
 # = Description
-# Questa classe si occupa della gestione degli utenti.
+# Questo modulo si occupa della gestione degli utenti.
 # = License
 # NetSmith - bla bla bla
 #
@@ -15,7 +15,7 @@
 # Giovanni Amati, Domenico Chierico
 
 module LibUser
- 
+  
   # Aggiungere una nuova utente.
   def LibUser.add(username, keyfile)
     if Process.uid != 0

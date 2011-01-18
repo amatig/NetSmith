@@ -4,7 +4,6 @@ class CreateMachines < ActiveRecord::Migration
     create_table :machines do |t|
       t.string :ip, :limit => 15
       t.string :mac, :limit => 17
-      t.string :hostname
       t.string :distro
       t.string :template
       t.text :descr

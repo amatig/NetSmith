@@ -1,6 +1,6 @@
-# Classe per la gestione dei kickstart file.
+# Modulo per la gestione dei kickstart file.
 # = Description
-# Questa classe si occupa della gestione dei file di kickstart utili per le installazioni di alcune distro linux.
+# Questo modulo si occupa della gestione dei file di kickstart utili per le installazioni di alcune distro linux.
 # = License
 # NetSmith - bla bla bla
 #

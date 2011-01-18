@@ -21,7 +21,7 @@ namespace "user" do
   
   desc "List defined user into NetSmith system"
   task :list do |t, args|
-    puts output(LibUser.list())
+    puts output(LibUser.list)
   end
   
   desc "Change public ssl key for user"

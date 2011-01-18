@@ -29,8 +29,7 @@ In alternativa, installare singolarmente ogni gemma con il comando:
 
 == Beta Install
 
-Copiare la cartella di NetSmith in /var/www/html o in alternativa fornire da apache un accesso alla cartella.
-Modificare se necessario tutti i permessi come utente e non root.
+Copiare la cartella di NetSmith in /var/www/html o in alternativa fornire da apache un accesso alla cartella, modificare se necessario tutti i permessi.
 
 == Beta Config
 

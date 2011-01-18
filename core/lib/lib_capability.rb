@@ -1,6 +1,6 @@
-# Classe e funzioni per la gestione delle capabilities.
+# Modulo per la gestione delle capabilities.
 # = Description
-# Questa classe e funzioni si occupano della gestione delle capabilities per il controllo degli accessi alle risorse.
+# Questo modulo si occupano della gestione delle capabilities per il controllo degli accessi alle risorse.
 # = License
 # NetSmith - bla bla bla
 #

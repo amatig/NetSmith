@@ -1,6 +1,6 @@
-# Classe per la gestione delle macchine da installare.
+# Modulo per la gestione delle macchine da installare.
 # = Description
-# Questa classe si occupa della gestione delle macchine che potranno essere installate via rete dal sistema.
+# Questo modulo si occupa della gestione delle macchine che potranno essere installate via rete dal sistema.
 # = License
 # NetSmith - bla bla bla
 #
@@ -19,16 +19,14 @@ module LibMachine
   # Aggiunge una nuova macchina installabile.
   # @param [String] ip indirizzo della macchina.
   # @param [String] mac MAC Address della macchina.
-  # @param [String] hostname hostname della macchina.
   # @param [String] distro nome della distro da l'installazione sulla macchina.
   # @param [String] template kickstart template per l'installazione della macchina.
   # @param [String] descr descrizione della macchina.
   # @param [Hash] values valori di attualizzazione per il template della macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibMachine.add(ip, mac, hostname, distro, template, descr, values = {})
+  def LibMachine.add(ip, mac, distro, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
-                    :hostname => hostname,
                     :distro => distro,
                     :template => template,
                     :descr => descr)
@@ -54,10 +52,10 @@ module LibMachine
   end
   
   # Rimuove una macchina installabile.
-  # @param [String] ip indirizzo di una macchina.
+  # @param [String] machine id o indirizzo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibMachine.del(ip)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+  def LibMachine.del(machine)
+    m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       path = File.expand_path("../../../resources/ks", __FILE__)
       file = File.join(path, m.mac.gsub(":", "-") + "-" + m.template) # rimuove il ks
@@ -65,17 +63,17 @@ module LibMachine
       m.destroy
       true
     else
-      raise StandardError, "Machine #{ip} don't exists"
+      raise StandardError, "Machine #{machine} don't exists"
     end
   end
   
   # Modifica un attributo di una macchina installabile.
-  # @param [String] ip indirizzo di una macchina.
+  # @param [String] machine id o indirizzo di una macchina.
   # @param [String] attr nome dell'attributo di una macchina.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def LibMachine.edit(ip, attr, value)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+  def LibMachine.edit(machine, attr, value)
+    m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       m[attr] = value
       if m.valid?
@@ -95,16 +93,16 @@ module LibMachine
         a.errors
       end
     else
-      raise StandardError, "Machine #{ip} don't exists"
+      raise StandardError, "Machine #{machine} don't exists"
     end
   end
   
   # Genera i file necessari all'installare di una macchina.
-  # @param [String] ip indirizzo di una macchina.
+  # @param [String] machine id or indirizzo di una macchina.
   # @param [String] netsmith_ip indirizzo pubblico della macchina in cui e' installato il sistema.
   # @param [String] options stringa di opzioni passabili al menu boot pxe.
-  def LibMachine.generate(ip, netsmith_ip, pxe_options = "")
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+  def LibMachine.generate(machine, netsmith_ip, pxe_options = "")
+    m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       path = File.expand_path("../../../", __FILE__)
       file = File.join(path, "resources/templates", "pxe.template")
@@ -129,24 +127,24 @@ module LibMachine
         raise IOError, "PXE template #{file} don't exists"
       end
     else
-      raise StandardError, "Machine #{ip} don't exists"
+      raise StandardError, "Machine #{machine} don't exists"
     end      
   end
   
   # Crea un server gestibile da una macchine installabile.
-  # @param [String] ip indirizzo di una macchina.
+  # @param [String] machine id or indirizzo di una macchina.
   # @param [String] conn_type tipo di connessione al server.
-  def LibMachine.to_server(ip, conn_type)
-    m = Machine.find(:first, :conditions => ["ip = ?", ip])
+  def LibMachine.to_server(machine, conn_type)
+    m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       LibServer.new.add(m.ip, conn_type, m.hostname, m.descr)
     else
-      raise StandardError, "Machine #{ip} don't exists"
+      raise StandardError, "Machine #{machine} don't exists"
     end    
   end
   
   # Lista delle macchine installabili.
-  # @return [Array<String>] lista delle macchine.
+  # @return [Array<Machine>] lista delle macchine.
   def LibMachine.list
     Machine.all
   end

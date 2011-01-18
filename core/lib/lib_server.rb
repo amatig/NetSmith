@@ -1,6 +1,6 @@
-# Classe per la gestione dei server.
+# Modulo per la gestione dei server.
 # = Description
-# Questa classe si occupa della gestione di server di varia natura configurabili in maniera remota dal sistema.
+# Questo modulo si occupa della gestione di server di varia natura configurabili in maniera remota dal sistema.
 # = License
 # NetSmith - bla bla bla
 #
