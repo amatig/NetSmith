@@ -14,22 +14,22 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class LibUser
+module LibUser
  
-  # Aggiungere un nuovo utente.
-  
-  def add(username, keyfile)
-    if Process.uid!=0
+  # Aggiungere una nuova utente.
+  def LibUser.add(username, keyfile)
+    if Process.uid != 0
       return "use sudo or root for adding new user"
     end
-    if(not File.exist?(keyfile.to_s))
-      return "File _#{keyfile}_ don't exists"
+    if (not File.exist?(keyfile))
+      return "File #{keyfile} don't exists"
     end
-    sslf = File.open(keyfile,"r")
+    sslf = File.open(keyfile, "r")
     sslpkey = sslf.read
     sslf.close
-    user = Etc.getpwnam(username)
 
+    user = Etc.getpwnam(username)
+    
     if user
       u = User.new(:username => user.name,
                    :userid => user.uid,
@@ -45,8 +45,8 @@ class LibUser
   rescue Exception => detail
     p detail
   end
-
-  def del(username)
+  
+  def LibUser.del(username)
     if Process.uid!=0
       return "user sudo or root for delete user"
     end
@@ -59,11 +59,11 @@ class LibUser
     end
   end
   
-  def list()
+  def LibUser.list
     User.all
   end
   
-  def update_ssl_key(username, keyfile)
+  def LibUser.update_ssl_key(username, keyfile)
     user = Etc.getpwnam(username)
     if user.uid == Process.uid or Process.uid == 0
       if( not File.exist?(keyfile))
@@ -82,7 +82,7 @@ class LibUser
     end
   end
   
-  def add_access_to(username, server_ip)
+  def LibUser.add_access_to(username, server_ip)
     user = Etc.getpwnam(username)
     u = User.find(:first, 
                   :conditions => ["username=? and userid=?", 
@@ -102,11 +102,11 @@ class LibUser
     LibCapability.add_map(u,cap.cap_code)
   end
   
-  def list_capability()
+  def LibUser.list_capabilities
     uid = Process.uid
     u = User.find(:first, :conditions => [ "userid=?", uid])
     if not u
-      user = Etc.getpwid(uid)
+      user = Etc.getpwuid(uid)
       return "User #{user.name} isn't added tu NetSmith"
     end
     u.capability_mappings
