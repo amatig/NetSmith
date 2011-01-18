@@ -93,7 +93,7 @@ class LibKickstart
     end
   end
   
-  # Mostra i campi parametrici di un template kickstart.
+  # Ritorna i campi parametrici di un template kickstart.
   # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Hash] dizionario delle variabili nel template { nome => tipo, ... }.
   def get_fields(name)

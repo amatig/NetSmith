@@ -27,7 +27,7 @@ namespace "ks" do
     puts output(LibKickstart.new.actualize(args[:ip]))
   end
   
-  desc "Mostra i campi parametrici di un template kickstart."
+  desc "Ritorna i campi parametrici di un template kickstart."
   task :get_fields, [:name] do |t, args|
     puts output(LibKickstart.new.get_fields(args[:name]))
   end
