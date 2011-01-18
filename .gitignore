@@ -4,3 +4,4 @@
 doc
 core/db/netsmith.sqlite3
 resources/ks
+tftpboot/pxelinux.cfg/*
