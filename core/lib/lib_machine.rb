@@ -14,7 +14,7 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-class LibMachine
+module LibMachine
   
   # Aggiunge una nuova macchina installabile.
   # @param [String] ip indirizzo della macchina.
@@ -25,7 +25,7 @@ class LibMachine
   # @param [String] descr descrizione della macchina.
   # @param [Hash] values valori di attualizzazione per il template della macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def add(ip, mac, hostname, distro, template, descr, values = {})
+  def LibMachine.add(ip, mac, hostname, distro, template, descr, values = {})
     m = Machine.new(:ip => ip, 
                     :mac => mac,
                     :hostname => hostname,
@@ -56,7 +56,7 @@ class LibMachine
   # Rimuove una macchina installabile.
   # @param [String] ip indirizzo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def del(ip)
+  def LibMachine.del(ip)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       path = File.expand_path("../../../resources/ks", __FILE__)
@@ -74,7 +74,7 @@ class LibMachine
   # @param [String] attr nome dell'attributo di una macchina.
   # @param [String/Integer/Boolean/...] value nuovo valore dell'attributo di una macchina.
   # @return [Boolean] messaggio di esito dell'operazione.
-  def edit(ip, attr, value)
+  def LibMachine.edit(ip, attr, value)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       m[attr] = value
@@ -103,7 +103,7 @@ class LibMachine
   # @param [String] ip indirizzo di una macchina.
   # @param [String] netsmith_ip indirizzo pubblico della macchina in cui e' installato il sistema.
   # @param [String] options stringa di opzioni passabili al menu boot pxe.
-  def generate(ip, netsmith_ip, pxe_options = "")
+  def LibMachine.generate(ip, netsmith_ip, pxe_options = "")
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       path = File.expand_path("../../../", __FILE__)
@@ -136,7 +136,7 @@ class LibMachine
   # Crea un server gestibile da una macchine installabile.
   # @param [String] ip indirizzo di una macchina.
   # @param [String] conn_type tipo di connessione al server.
-  def to_server(ip, conn_type)
+  def LibMachine.to_server(ip, conn_type)
     m = Machine.find(:first, :conditions => ["ip = ?", ip])
     if m
       LibServer.new.add(m.ip, conn_type, m.hostname, m.descr)
@@ -147,7 +147,7 @@ class LibMachine
   
   # Lista delle macchine installabili.
   # @return [Array<String>] lista delle macchine.
-  def list
+  def LibMachine.list
     Machine.all
   end
   
