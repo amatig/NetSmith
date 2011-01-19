@@ -63,6 +63,7 @@ module LibCapability
     else
       c.errors
     end
+    c
   end
   
 end
