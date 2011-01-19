@@ -25,11 +25,7 @@ module LibServer
     s = Server.new(:ip => ip, 
                    :conn_type => conn_type,
                    :descr => descr)
-    if s.save
-      s
-    else
-      s.errors
-    end
+    s.save ? s : s.errors
   end
   
   # Rimuove un server in gestione.
@@ -53,11 +49,7 @@ module LibServer
     s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
     if s
       s[attr] = value
-      if s.save
-        true
-      else
-        s.errors
-      end
+      s.save ? true : s.errors
     else
       raise StandardError, "Server #{server} don't exists"
     end

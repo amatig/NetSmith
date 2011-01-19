@@ -82,20 +82,14 @@ module LibMachine
     m = Machine.find(:first, :conditions => ["id = ? or ip = ?", machine, machine])
     if m
       m[attr] = value
-      unless m.save
-        return m.errors
-      end
+      return m.errors unless m.save
       a = SettingValue.find(:first, :conditions => ["machine_id = ? and name = ?", m.id, attr])
       if a
         a.value = value
       else
         a = SettingValue.new(:machine_id => m.id, :name => attr, :value => value)
       end
-      if a.save
-        a
-      else
-        a.errors
-      end
+      a.save ? a : a.errors
     else
       raise StandardError, "Machine #{machine} don't exists"
     end

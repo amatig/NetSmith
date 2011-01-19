@@ -73,15 +73,16 @@ module LibKickstart
       file = File.join(path, "templates", m.template)
       if File.exist?(file)
         Dir.mkdir(File.join(path, "ks")) unless File.exist?(File.join(path, "ks"))
+        file_ks = File.join(path, "ks", m.mac.gsub(":", "-") + "-" + m.template)
         unless values.empty?
           f = File.open(file, "r")
           template = Liquid::Template.parse(f.read)
           f.close
-          f = File.new(File.join(path, "ks", m.mac.gsub(":", "-") + "-" + m.template), "w")
+          f = File.new(file_ks, "w")
           f.write(template.render(values))
           f.close
         else
-          File.copy(file, File.join(path, "ks", m.mac.gsub(":", "-") + "-" + m.template))
+          File.copy(file, file_ks)
         end
         true
       else
