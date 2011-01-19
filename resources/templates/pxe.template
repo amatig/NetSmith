@@ -3,5 +3,5 @@ default linux
 timeout 10
 
 LABEL linux
-KERNEL {{vmlinuz}}
-APPEND ks=http://{{ip}}/NetSmith/resources/ks/{{kickstart}} initrd={{initrd}} {{options}}
+KERNEL {{vmlinuz|text}}
+APPEND ks=http://{{ip|text}}/NetSmith/resources/ks/{{kickstart|text}} initrd={{initrd|text}} {{options|text}}

@@ -54,16 +54,15 @@ module LibCapability
   
   # Aggiunge un mapping tra utente e capability.
   # @param [User/Integer] user oggetto o indice dell'utente.
-  # @return [Boolean] messaggio di esito dell'operazione.
+  # @return [CapabilityMapping] oggetto di tipo capability mapping.
   def LibCapability.add_map(user, cap_code)
     c = CapabilityMapping.new(:user_id => user,
                               :rand_code => cap_code)
-    if c.valid?
-      c.save
+    if c.save
+      c
     else
       c.errors
     end
-    c
   end
   
 end
