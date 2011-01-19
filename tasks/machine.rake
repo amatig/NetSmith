@@ -39,7 +39,7 @@ namespace "machine" do
                                      args[:descr],
                                      values))
     else
-      puts output("Error kickstart file")
+      puts output("Error in kickstart file")
     end
   end
   

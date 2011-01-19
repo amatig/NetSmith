@@ -20,13 +20,13 @@ module LibServer
   # @param [String] ip indirizzo del server.
   # @param [String] conn_type tipo di connessione al server.
   # @param [String] descr descrizione del server.
-  # @return [Boolean] messaggio di esito dell'operazione.
+  # @return [Server] oggetto di tipo server.
   def LibServer.add(ip, conn_type,  descr)
     s = Server.new(:ip => ip, 
                    :conn_type => conn_type,
                    :descr => descr)
-    if s.valid?
-      s.save
+    if s.save
+      s
     else
       s.errors
     end
@@ -34,12 +34,11 @@ module LibServer
   
   # Rimuove un server in gestione.
   # @param [Integer/String] server id o indirizzo del server.
-  # @return [Boolean] messaggio di esito dell'operazione.
+  # @return [Server] oggetto di tipo server appen cancellato.
   def LibServer.del(server)
     s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
     if s
       s.destroy
-      true
     else
       raise StandardError, "Server #{server} don't exists"
     end
@@ -54,8 +53,8 @@ module LibServer
     s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
     if s
       s[attr] = value
-      if s.valid?
-        s.save
+      if s.save
+        true
       else
         s.errors
       end

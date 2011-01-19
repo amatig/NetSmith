@@ -32,8 +32,7 @@ module LibKickstart
   # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Boolean] messaggio di esito dell'operazione.
   def LibKickstart.del_template(name)
-    path = File.expand_path("../../../resources/templates", __FILE__)
-    file = File.join(path, name)
+    file = File.expand_path("../../../resources/templates/#{name}", __FILE__)
     if File.exist?(file)
       File.delete(file)
       true
@@ -97,8 +96,7 @@ module LibKickstart
   # @param [String] name nome di un template kickstart gia' nel sistema.
   # @return [Hash] dizionario delle variabili nel template { nome => tipo, ... }.
   def LibKickstart.get_fields(name)
-    path = File.expand_path("../../../resources/templates", __FILE__)
-    file = File.join(path, name)
+    file = File.expand_path("../../../resources/templates/#{name}", __FILE__)
     if File.exist?(file)
       f = File.open(file, "r")
       template = Liquid::Template.parse(f.read)
