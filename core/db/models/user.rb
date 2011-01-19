@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
   validates_presence_of :sslkey
   validates_uniqueness_of :username
   validates_uniqueness_of :userid
+
+  include UserBackend
   
   def to_s
     return "#{userid} #{username}"

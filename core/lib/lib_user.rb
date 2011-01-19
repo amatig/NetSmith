@@ -18,44 +18,35 @@ module LibUser
   
   # Aggiungere una nuova utente.
   def LibUser.add(username, keyfile)
-    if Process.uid != 0
-      return "use sudo or root for adding new user"
-    end
+    UserBackend.only_root
     if (not File.exist?(keyfile))
       return "File #{keyfile} don't exists"
     end
-    sslf = File.open(keyfile, "r")
-    sslpkey = sslf.read
-    sslf.close
-
-    user = Etc.getpwnam(username)
+    sslpkey = IO.read(keyfile).strip()
+    user_id = UserBackend.get_uid(username)
     
-    if user
-      u = User.new(:username => user.name,
-                   :userid => user.uid,
+    if user_id
+      User.create!(:username => username,
+                   :userid => user_id,
                    :sslkey => sslpkey)
-      if u.valid?
-        u.save
-      else
-        u.errors
-      end
     else
       "User #{username} don't exists"
     end
-  rescue Exception => detail
-    p detail
+  rescue ActiveRecord::RecordInvalid => invalid
+    invalid.record.errors
   end
   
   def LibUser.del(username)
-    if Process.uid!=0
-      return "user sudo or root for delete user"
-    end
-    user = Etc.getpwnam(username)
-    u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
-    if u
-      u.destroy
+    UserBackend.only_root
+    User.find(:first, 
+              :conditions => ["username=? and userid=?", 
+                              username, 
+                              UserBackend.get_uid(username)]).destroy
+  rescue NoMethodError => method
+    if method.name == :destroy
+      return "User #{username} do not exists"
     else
-      "User #{username} do not exists"
+      raise method
     end
   end
   
@@ -64,30 +55,28 @@ module LibUser
   end
   
   def LibUser.update_ssl_key(username, keyfile)
-    user = Etc.getpwnam(username)
-    if user.uid == Process.uid or Process.uid == 0
-      if( not File.exist?(keyfile))
-        return "File #{keyfile} don't exists"
-      end
-      sslpkey = File.open(keyfile,"r").read
-      u = User.find(:first, :conditions => ["username=? and userid=?", user.name, user.uid])
-      if u
-        u[:sslkey] = sslpkey
+    UserBackend.only_your_or_root(username)
+    if( not File.exist?(keyfile))
+      return "File #{keyfile} don't exists"
+    end
+    sslpkey = File.open(keyfile,"r").read
+    u = User.find(:first, 
+                  :conditions => ["username=? and userid=?", 
+                                  username,
+                                  UserBackend.get_uid(username)])
+    if u
+      u[:sslkey] = sslpkey
         u.save
-      else
-        "Can't find #{username} into the system"
-      end
     else
-      "You can't modify public key file for #{username} user, use root account"
+      "Can't find #{username} into the system"
     end
   end
   
   def LibUser.add_access_to(username, server_ip)
-    user = Etc.getpwnam(username)
     u = User.find(:first, 
                   :conditions => ["username=? and userid=?", 
-                                  user.name, 
-                                  user.uid])
+                                  username, 
+                                  UserBackend.get_uid(username)])
     if not u
       return "User #{username} doesn't exists"
     end
@@ -103,8 +92,7 @@ module LibUser
   end
   
   def LibUser.list_capabilities
-    uid = Process.uid
-    u = User.find(:first, :conditions => [ "userid=?", uid])
+    u = UserBackend.get_signed_user
     if not u
       user = Etc.getpwuid(uid)
       return "User #{user.name} isn't added tu NetSmith"
