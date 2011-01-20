@@ -68,6 +68,16 @@ module LibCapability
     raise "Invalid User #{username}"
   end
 
+  def LibCapability.add_group_map(group, cap_code)
+    code = GroupBackend.get_gid(group)
+    GroupsCapabilityMapping.create!(:code => code ? code : group,
+                                    :rand_code => cap_code)
+  rescue ActiveRecord::RecordInvalid => invalid
+    invalid.record.errors
+  rescue NoMethodError => error
+    raise error
+  end
+
   # Access controll and verification #
 
   def LibCapability.only_root()
@@ -102,7 +112,18 @@ module LibCapability
     if error.name == :is_superuser?
       raise "Invalid User"
     elsif error.name == :rand_code
-      raise "User #{suser.username} don't have right capability"
+      found = false
+      GroupBackend.get_groups.each do |g|
+        c = GroupsCapabilityMapping.find(:first, 
+                                         :conditions => ["code=? and rand_code LIKE ?",
+                                                         g,
+                                                         "#{id}-#{table}-#{type}%"])
+        if c
+          found = true
+          break
+        end
+      end
+      raise "User #{suser.username} don't have right capability" if not found
     elsif
       raise error
     end

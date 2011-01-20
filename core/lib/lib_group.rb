@@ -1,6 +1,6 @@
-# NetSmith Importer.
+# Modulo per la gestione degli utenti.
 # = Description
-# File di require principale per importare tutte le funzionalita' di NetSmith.
+# Questo modulo si occupa della gestione degli utenti.
 # = License
 # NetSmith - bla bla bla
 #
@@ -14,28 +14,15 @@
 # = Authors
 # Giovanni Amati, Domenico Chierico
 
-# Require external libs
-require "rubygems"
-require "active_record"
-require "sqlite3"
-require "yaml"
-require "liquid"
-require "logger"
-require "ftools"
-
-# Require all libs
-require "core/lib/ns_utils"
-require "core/lib/lib_database"
-require "core/lib/lib_capability"
-require "core/lib/ns_base"
-require "core/lib/lib_kickstart"
-require "core/lib/lib_server"
-require "core/lib/lib_machine"
-require "core/lib/lib_user"
-require "core/lib/lib_group"
-
-# Estabilish connection database
-LibDatabase.instance
-
-# Require all models
-Dir.glob("core/db/models/*.rb").each { |r| require r }
+module LibGroup
+  
+  def LibGroup.list
+    GroupBackend.list
+  end
+  
+  def LibGroup.list_capabilities(group)
+    code = GroupBackend.get_gid(group)
+    GroupsCapabilityMapping.find(:all, :conditions => ["code = ?", code ? code : group])
+  end
+  
+end
