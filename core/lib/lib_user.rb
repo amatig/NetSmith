@@ -18,7 +18,7 @@ module LibUser
   
   # Aggiungere una nuova utente.
   def LibUser.add(username, keyfile)
-    UserBackend.only_root
+    LibCapability.require_cap(0,"user","W")
     if (not File.exist?(keyfile))
       return "File #{keyfile} don't exists"
     end
@@ -37,7 +37,7 @@ module LibUser
   end
   
   def LibUser.del(username)
-    UserBackend.only_root
+    LibCapability.only_root
     User.find(:first, 
               :conditions => ["username=? and userid=?", 
                               username, 
@@ -55,7 +55,7 @@ module LibUser
   end
   
   def LibUser.update_ssl_key(username, keyfile)
-    UserBackend.only_your_or_root(username)
+    LibCapability.only_your_or_root(username)
     if( not File.exist?(keyfile))
       return "File #{keyfile} don't exists"
     end
@@ -92,6 +92,7 @@ module LibUser
   end
   
   def LibUser.list_capabilities
+    LibCapability.require_cap(0,"capability_mapping","R")
     u = UserBackend.get_signed_user
     if not u
       user = Etc.getpwuid(uid)

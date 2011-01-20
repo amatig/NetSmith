@@ -15,21 +15,7 @@
 # Giovanni Amati, Domenico Chierico
 
 module UserBackend
-  
-  def self.only_root()
-    suser = UserBackend.get_signed_user
-    if suser and not suser.is_superuser?
-      raise "Use sudo or root for use this method"
-    end
-  end
-
-  def self.only_your_or_root(username)
-    user = Etc.getpwnam(username)
-    if not (user.uid == Process.uid or Process.uid == 0)
-      raise "You can't modify public key file for #{username} user, use root account"
-    end
-  end
-
+ 
   def self.get_signed_user
     User.find(:first, :conditions => ["userid=?", Process.uid])
   end

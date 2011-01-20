@@ -22,6 +22,7 @@ module LibServer
   # @param [String] descr descrizione del server.
   # @return [Server] oggetto di tipo server.
   def LibServer.add(ip, conn_type,  descr)
+    LibCapability.require_cap(0,"server","w")
     s = Server.new(:ip => ip, 
                    :conn_type => conn_type,
                    :descr => descr)
@@ -47,6 +48,7 @@ module LibServer
   # @return [Boolean] messaggio di esito dell'operazione.
   def LibServer.edit(server, attr, value)
     s = Server.find(:first, :conditions => ["id = ? or ip = ?", server, server])
+    LibCapability.require_cap(s.id,"server","W")
     if s
       s[attr] = value
       s.save ? true : s.errors

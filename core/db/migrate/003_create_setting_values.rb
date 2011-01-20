@@ -6,7 +6,9 @@ class CreateSettingValues < ActiveRecord::Migration
       t.string :name, :limit => 25
       t.string :value
     end
-    Capability.create(:cap_code => "0-setting_value-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-setting_value-R-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-setting_value-W-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-setting_value-X-#{LibCapability.generate_cap}")
   end
   
   def self.down

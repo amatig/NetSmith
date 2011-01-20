@@ -6,7 +6,9 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :userid
       t.text :sslkey
     end
-    Capability.create(:cap_code => "0-user-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-user-R-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-user-W-#{LibCapability.generate_cap}")
+    Capability.create(:cap_code => "0-user-X-#{LibCapability.generate_cap}")
     User.create(:username => "root" , :userid => 0, :sslkey => "clean stuff")
   end
   

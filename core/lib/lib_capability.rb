@@ -18,7 +18,9 @@ module LibCapability
   
   # Callback per generare una capability dopo ogni creazione di una entita'.
   def LibCapability.after_create(e)
-    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-#{generate_cap}")
+    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-R-#{generate_cap}")
+    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-W-#{generate_cap}")
+    Capability.create(:cap_code => "#{e.id}-#{e.class.to_s.downcase}-X-#{generate_cap}")
   end
   
   # Random di 20 cifre per i codici di capabilities.
@@ -32,37 +34,78 @@ module LibCapability
   # @param [String] tab nome della tabella.
   # @param [String/Integer] cap numero random.
   # @return [String] codice di capability.
-  def LibCapability.build_cap_code(id, tab, cap)
-    "#{id}-#{tab}-#{cap}"
+  def LibCapability.build_cap_code(id, tab, type, cap)
+    "#{id}-#{tab}-#{type}-#{cap}"
   end
   
   # Dato un codice di capability ritorna solo la parte del codice random.
   # @param [String] cap_code codice di capability da strippare.
   # @return [String] numero cap della capability.
   def LibCapability.strip_cap(cap_code)
-    cap.cap_code.split('-')[2]
+    cap.cap_code.split('-')[3]
   end
   
   # Torna una capability.
   # @param [Integer] id chiave univoca dell'entita' della tabella.
   # @param [String] tab nome della tabella.
   # @return [Capability] oggetto di tipo capability.
-  def LibCapability.find_cap_code(id, tab)
+  def LibCapability.find_cap_code(id, tab, type)
+    require_cap(0, "capability", "R")
     Capability.find(:first, 
-                    :conditions => ["cap_code LIKE ?", "#{id}-#{tab}-%"])
+                    :conditions => ["cap_code LIKE ?", "#{id}-#{tab}-#{type}%"])
   end
   
   # Aggiunge un mapping tra utente e capability.
-  # @param [User/Integer] user oggetto o indice dell'utente.
+  # @param [User/Integer] nome dell'utente.
   # @return [CapabilityMapping] oggetto di tipo capability mapping.
-  def LibCapability.add_map(user, cap_code)
-    c = CapabilityMapping.new(:user_id => user,
+  def LibCapability.add_map(username, cap_code)
+    user = User.find(:first, :conditions => [ "username=?", username ])
+    CapabilityMapping.create!(:user_id => user.id,
                               :rand_code => cap_code)
-    if c.save
-      c
-    else
-      c.errors
+  rescue ActiveRecord::RecordInvalid => invalid
+    invalid.record.errors
+  rescue NoMethodError => error
+    raise "Invalid User #{username}"
+  end
+
+  # Access controll and verification #
+
+  def LibCapability.only_root()
+    suser = UserBackend.get_signed_user
+    if suser and not suser.is_superuser?
+      raise "Use sudo or root for use this method"
     end
   end
   
+  def LibCapability.only_your_or_root(username)
+    uid = UserBackend.get_uid(username)
+    curr_user = UserBackend.get_signed_user
+    if not (uid == curr_user.userid or curr_user.userid == 0)
+      raise "You can't modify public key file for #{username} user, use root account"
+    end
+  end
+
+  def LibCapability.require_cap(id, table, type)
+    suser = UserBackend.get_signed_user
+    if not suser.is_superuser?
+      c = CapabilityMapping.find(:first, 
+                                 :conditions => ["user_id=? and rand_code LIKE ?",
+                                                 suser,
+                                                 "#{id}-#{table}-#{type}%"])
+      u = Capability.find(:first,
+                          :conditions => [ "cap_code=?", c.rand_code ])
+      if not u
+        raise "User #{suser.username} don't have right capability"
+      end
+    end
+  rescue NoMethodError => error
+    if error.name == :is_superuser?
+      raise "Invalid User"
+    elsif error.name == :rand_code
+      raise "User #{suser.username} don't have right capability"
+    elsif
+      raise error
+    end
+  end
+
 end

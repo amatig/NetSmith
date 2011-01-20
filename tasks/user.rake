@@ -39,4 +39,14 @@ namespace "user" do
     puts output(LibUser.list_capabilities)
   end
   
+  desc "Base capability managemente"
+  task :add_mapping, [:user, :cap_code] do |t, args|
+    puts output(LibCapability.add_map(args[:user], args[:cap_code]))
+  end
+
+  desc "Search for capability"
+  task :find_capability, [:id, :table, :type] do |t, args|
+    puts output(LibCapability.find_cap_code(args[:id], args[:table], args[:type]))
+  end
+  
 end
