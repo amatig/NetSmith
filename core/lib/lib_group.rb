@@ -17,11 +17,11 @@
 module LibGroup
   
   def LibGroup.list
-    GroupBackend.list
+    UserBackend.all_groups
   end
   
   def LibGroup.list_capabilities(group)
-    code = GroupBackend.get_gid(group)
+    code = UserBackend.get_gid(group)
     GroupsCapabilityMapping.find(:all, :conditions => ["code = ?", code ? code : group])
   end
   

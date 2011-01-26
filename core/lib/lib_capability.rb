@@ -69,7 +69,7 @@ module LibCapability
   end
 
   def LibCapability.add_group_map(group, cap_code)
-    code = GroupBackend.get_gid(group)
+    code = UserBackend.get_gid(group)
     GroupsCapabilityMapping.create!(:code => code ? code : group,
                                     :rand_code => cap_code)
   rescue ActiveRecord::RecordInvalid => invalid
@@ -77,9 +77,9 @@ module LibCapability
   rescue NoMethodError => error
     raise error
   end
-
+  
   # Access controll and verification #
-
+  
   def LibCapability.only_root()
     suser = UserBackend.get_signed_user
     if suser and not suser.is_superuser?
@@ -94,7 +94,7 @@ module LibCapability
       raise "You can't modify public key file for #{username} user, use root account"
     end
   end
-
+  
   def LibCapability.require_cap(id, table, type)
     suser = UserBackend.get_signed_user
     if not suser.is_superuser?
@@ -113,7 +113,7 @@ module LibCapability
       raise "Invalid User"
     elsif error.name == :rand_code
       found = false
-      GroupBackend.get_groups.each do |g|
+      UserBackend.user_groups.each do |g|
         c = GroupsCapabilityMapping.find(:first, 
                                          :conditions => ["code=? and rand_code LIKE ?",
                                                          g,
@@ -128,5 +128,5 @@ module LibCapability
       raise error
     end
   end
-
+  
 end
