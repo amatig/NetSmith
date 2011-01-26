@@ -95,7 +95,7 @@ module LibUser
     LibCapability.require_cap(0,"capability_mapping","R")
     u = UserBackend.get_signed_user
     if not u
-      user = Etc.getpwuid(uid)
+      user = LibBackend.get_singed_uname
       return "User #{user.name} isn't added tu NetSmith"
     end
     u.capability_mappings
