@@ -25,6 +25,11 @@ module UserBackend
   rescue
     nil
   end
+
+  def self.get_signed_uname()
+    Etc.getpwuid(Process.uid)
+  end
+
   #Questo metodo e' solo accessibile attraverso l'oggetto User
   def is_superuser?
     (self.userid==0)
